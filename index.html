@@ -1,171 +1,923 @@
-<!-- 🎧 AUDIOGUÍAS DEL MUSEO -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Museo Virtual - Revolución China</title>
+
 <style>
-.audioguia {
-    margin-top: 20px;
-    padding: 20px;
-    border-radius: 15px;
-    background: #f1f1f1;
-    border: 2px solid #c9c9c9;
+* {
+    box-sizing: border-box;
 }
 
-.audioguia h3 {
-    margin-top: 0;
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #111;
+    color: white;
 }
 
-.audio-controles {
+header {
+    min-height: 420px;
+    padding: 80px 25px;
+    text-align: center;
+    background:
+        linear-gradient(rgba(0,0,0,.65),rgba(0,0,0,.75)),
+        url("https://www.loc.gov/resource/95501883/?fo=json") center/cover;
     display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
 }
 
-.audio-controles button {
-    border: none;
-    border-radius: 10px;
-    padding: 12px 18px;
-    cursor: pointer;
-    font-size: 15px;
+header h1 {
+    font-size: clamp(40px, 7vw, 80px);
+    margin: 0 0 20px;
+}
+
+header p {
+    font-size: 22px;
+    max-width: 850px;
+    margin: auto;
+}
+
+nav {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: #181818;
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #444;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 12px;
     font-weight: bold;
 }
 
-.btn-play {
-    background: #222;
+section {
+    max-width: 1100px;
+    margin: auto;
+    padding: 70px 20px;
+}
+
+h2 {
+    font-size: 38px;
+    margin-bottom: 30px;
+}
+
+.intro {
+    font-size: 19px;
+    line-height: 1.7;
+    color: #ddd;
+}
+
+.timeline {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(180px,1fr));
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.year {
+    padding: 25px;
+    border-radius: 15px;
+    background: #252525;
+    border: 1px solid #555;
+    cursor: pointer;
+    text-align: center;
+    transition: .2s;
+}
+
+.year:hover {
+    transform: translateY(-5px);
+    background: #333;
+}
+
+.year strong {
+    font-size: 30px;
+}
+
+.sala {
+    background: #1d1d1d;
+    margin: 35px auto;
+    padding: 30px;
+    border-radius: 20px;
+    border: 1px solid #444;
+}
+
+.sala h3 {
+    font-size: 30px;
+}
+
+.sala p {
+    color: #ddd;
+    line-height: 1.7;
+}
+
+.imagen {
+    width: 100%;
+    max-height: 650px;
+    object-fit: contain;
+    background: #080808;
+    border-radius: 15px;
+    cursor: pointer;
+    margin: 20px 0;
+}
+
+.caption {
+    text-align: center;
+    color: #aaa;
+    font-size: 14px;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
+    gap: 20px;
+    margin-top: 25px;
+}
+
+.card {
+    background: #292929;
+    padding: 25px;
+    border-radius: 15px;
+}
+
+.card h4 {
+    margin-top: 0;
+    font-size: 21px;
+}
+
+.audioguia {
+    background: #292929;
+    padding: 25px;
+    border-radius: 15px;
+    margin-top: 25px;
+    border-left: 5px solid #aaa;
+}
+
+.audioguia button,
+.boton {
+    padding: 12px 18px;
+    border: none;
+    border-radius: 10px;
+    margin: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.play {
+    background: white;
+    color: black;
+}
+
+.pause {
+    background: #888;
     color: white;
 }
 
-.btn-pausa {
-    background: #777;
-    color: white;
-}
-
-.btn-stop {
+.stop {
     background: #b3261e;
     color: white;
 }
 
-.audio-estado {
-    margin-top: 10px;
-    font-size: 14px;
-    color: #555;
+.pregunta {
+    margin-top: 25px;
+    padding: 25px;
+    border-radius: 15px;
+    background: #101010;
+    border: 1px solid #666;
+    font-size: 20px;
+}
+
+footer {
+    text-align: center;
+    padding: 50px 20px;
+    background: #080808;
+    color: #aaa;
+}
+
+/* MODALES */
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: rgba(0,0,0,.93);
+    padding: 30px;
+    overflow-y: auto;
+}
+
+.modal-contenido {
+    max-width: 1000px;
+    margin: 40px auto;
+    background: #1d1d1d;
+    padding: 30px;
+    border-radius: 20px;
+    position: relative;
+}
+
+.cerrar {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-size: 35px;
+    cursor: pointer;
+}
+
+.modal img {
+    width: 100%;
+    max-height: 75vh;
+    object-fit: contain;
+    margin-top: 25px;
+}
+
+.modal h2 {
+    padding-right: 40px;
+}
+
+@media(max-width:600px) {
+    header {
+        min-height: 350px;
+    }
+
+    nav a {
+        display: inline-block;
+        margin: 5px;
+    }
+
+    section {
+        padding: 45px 15px;
+    }
 }
 </style>
+</head>
 
-<div class="audioguia">
-    <h3>🎧 Audioguía</h3>
+<body>
 
-    <p>
-        Escuchá la explicación de esta sala sobre la propaganda,
-        Mao y la Revolución China.
-    </p>
+<header>
+    <h1>La Revolución China</h1>
+    <p>1949 — Del triunfo comunista a la construcción de la República Popular China</p>
+</header>
 
-    <div class="audio-controles">
-        <button class="btn-play" onclick="reproducirAudio()">
-            ▶️ Escuchar audioguía
-        </button>
+<nav>
+    <a href="#inicio">Inicio</a>
+    <a href="#linea">Línea de tiempo</a>
+    <a href="#salas">Salas</a>
+</nav>
 
-        <button class="btn-pausa" onclick="pausarAudio()">
-            ⏸️ Pausar
-        </button>
+<section id="inicio">
 
-        <button class="btn-stop" onclick="detenerAudio()">
-            ⏹️ Detener
-        </button>
-    </div>
+<h2>Bienvenidos al museo</h2>
 
-    <div class="audio-estado" id="estadoAudio">
-        Audio detenido
-    </div>
+<p class="intro">
+Este museo virtual presenta algunos aspectos de la Revolución China y,
+especialmente, la relación entre propaganda, poder y vida cotidiana.
+A través de imágenes, objetos simbólicos y audioguías podemos observar
+cómo se construyeron diferentes representaciones de la revolución y
+de sus protagonistas.
+</p>
+
+</section>
+
+
+<section id="linea">
+
+<h2>📅 Línea de tiempo</h2>
+
+<p class="intro">
+Hacé clic en un año para conocer qué ocurrió.
+</p>
+
+<div class="timeline">
+
+<div class="year" onclick="abrirEvento('1911')">
+<strong>1911</strong>
+<p>Fin del Imperio</p>
 </div>
 
+<div class="year" onclick="abrirEvento('1921')">
+<strong>1921</strong>
+<p>Fundación del Partido Comunista</p>
+</div>
+
+<div class="year" onclick="abrirEvento('1927')">
+<strong>1927</strong>
+<p>Comienza la guerra civil</p>
+</div>
+
+<div class="year" onclick="abrirEvento('1934')">
+<strong>1934</strong>
+<p>Larga Marcha</p>
+</div>
+
+<div class="year" onclick="abrirEvento('1949')">
+<strong>1949</strong>
+<p>República Popular China</p>
+</div>
+
+<div class="year" onclick="abrirEvento('1966')">
+<strong>1966</strong>
+<p>Revolución Cultural</p>
+</div>
+
+<div class="year" onclick="abrirEvento('1976')">
+<strong>1976</strong>
+<p>Muerte de Mao</p>
+</div>
+
+</div>
+
+</section>
+
+
+<section id="salas">
+
+<h2>🏛️ Salas del museo</h2>
+
+
+<!-- SALA 1 -->
+
+<div class="sala">
+
+<h3>Sala 1 — Mao y la propaganda</h3>
+
+<img
+class="imagen"
+src="https://www.loc.gov/resource/95501883/"
+alt="Cartel de propaganda de Mao"
+onclick="abrirImagen(this.src)"
+>
+
+<p class="caption">
+Cartel de propaganda de Mao, 1967. Library of Congress.
+</p>
+
+<div class="info-grid">
+
+<div class="card">
+<h4>👥 ¿Qué personas aparecen?</h4>
+
+<p>
+Mao aparece representado como figura central. También aparecen
+multitudes que expresan apoyo y entusiasmo.
+</p>
+</div>
+
+<div class="card">
+<h4>⭐ ¿Cómo están representadas?</h4>
+
+<p>
+Mao ocupa una posición destacada y aparece asociado con imágenes
+de luz, fuerza y liderazgo.
+</p>
+</div>
+
+<div class="card">
+<h4>📢 ¿Qué mensaje transmite?</h4>
+
+<p>
+La imagen busca presentar a Mao como una figura fundamental
+del proceso revolucionario y transmitir una idea de unidad.
+</p>
+</div>
+
+<div class="card">
+<h4>🔎 ¿Qué queda afuera?</h4>
+
+<p>
+El cartel destaca determinados aspectos positivos y no muestra
+todas las experiencias, conflictos y opiniones existentes
+en la sociedad.
+</p>
+</div>
+
+</div>
+
+
+<div class="card" style="margin-top:20px">
+
+<h4>📕 Objeto simbólico</h4>
+
+<p>
+El Libro Rojo de Mao representa la importancia que tuvieron
+las citas y los textos políticos en la difusión de las ideas
+durante la Revolución Cultural.
+</p>
+
+</div>
+
+
+<div class="audioguia">
+
+<h3>🎧 Audioguía</h3>
+
+<p>
+Escuchá la explicación de esta sala.
+</p>
+
+<button class="play" onclick="reproducirAudio(1)">
+▶️ Escuchar
+</button>
+
+<button class="pause" onclick="pausarAudio()">
+⏸️ Pausar
+</button>
+
+<button class="stop" onclick="detenerAudio()">
+⏹️ Detener
+</button>
+
+<p id="estadoAudio1">Audio detenido</p>
+
+</div>
+
+
+<div class="pregunta">
+
+<strong>💭 Para pensar:</strong>
+
+<br><br>
+
+¿La propaganda mostraba la realidad o construía una imagen
+de cómo debía ser la sociedad?
+
+</div>
+
+</div>
+
+
+<!-- SALA 2 -->
+
+<div class="sala">
+
+<h3>Sala 2 — La propaganda y la sociedad</h3>
+
+<img
+class="imagen"
+src="https://www.loc.gov/resource/95501915/"
+alt="Propaganda de la Revolución Cultural"
+onclick="abrirImagen(this.src)"
+>
+
+<p class="caption">
+Cartel de propaganda de la Revolución Cultural, 1967.
+</p>
+
+<div class="info-grid">
+
+<div class="card">
+
+<h4>👨‍🌾 Trabajadores y campesinos</h4>
+
+<p>
+La propaganda frecuentemente representaba a trabajadores,
+campesinos y soldados como protagonistas de la sociedad.
+</p>
+
+</div>
+
+<div class="card">
+
+<h4>📢 Mensajes</h4>
+
+<p>
+Los carteles utilizaban colores, símbolos, multitudes y
+consignas para transmitir mensajes políticos.
+</p>
+
+</div>
+
+<div class="card">
+
+<h4>🏠 Vida cotidiana</h4>
+
+<p>
+La propaganda podía aparecer en espacios públicos, escuelas,
+publicaciones y otros ámbitos de la vida cotidiana.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="card" style="margin-top:20px">
+
+<h4>🚩 Objeto simbólico</h4>
+
+<p>
+Una bandera roja representa uno de los símbolos utilizados
+para identificar y difundir los mensajes revolucionarios.
+</p>
+
+</div>
+
+
+<div class="audioguia">
+
+<h3>🎧 Audioguía</h3>
+
+<button class="play" onclick="reproducirAudio(2)">
+▶️ Escuchar
+</button>
+
+<button class="pause" onclick="pausarAudio()">
+⏸️ Pausar
+</button>
+
+<button class="stop" onclick="detenerAudio()">
+⏹️ Detener
+</button>
+
+<p id="estadoAudio2">Audio detenido</p>
+
+</div>
+
+
+<div class="pregunta">
+
+<strong>💭 Para pensar:</strong>
+
+<br><br>
+
+¿Cómo puede una imagen influir en la manera en que las personas
+interpretan un acontecimiento histórico?
+
+</div>
+
+</div>
+
+
+<!-- SALA 3 -->
+
+<div class="sala">
+
+<h3>Sala 3 — La Revolución Cultural</h3>
+
+<img
+class="imagen"
+src="https://www.loc.gov/resource/95501455/"
+alt="Cartel de la Revolución Cultural"
+onclick="abrirImagen(this.src)"
+>
+
+<p class="caption">
+Cartel relacionado con la Revolución Cultural, 1967.
+</p>
+
+<div class="info-grid">
+
+<div class="card">
+
+<h4>📚 Las ideas de Mao</h4>
+
+<p>
+Durante la Revolución Cultural, las ideas de Mao ocuparon
+un lugar central en numerosos materiales de propaganda.
+</p>
+
+</div>
+
+<div class="card">
+
+<h4>👦 Los jóvenes</h4>
+
+<p>
+Los jóvenes, especialmente los Guardias Rojos, fueron
+representados como participantes importantes del proceso.
+</p>
+
+</div>
+
+<div class="card">
+
+<h4>🏛️ Cultura y sociedad</h4>
+
+<p>
+La Revolución Cultural buscó transformar distintos aspectos
+de la cultura, la educación y la sociedad china.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="card" style="margin-top:20px">
+
+<h4>📖 Objeto simbólico</h4>
+
+<p>
+El Libro Rojo de Mao es un objeto representativo de esta etapa
+porque recopilaba citas de Mao y tuvo una amplia circulación.
+</p>
+
+</div>
+
+
+<div class="audioguia">
+
+<h3>🎧 Audioguía</h3>
+
+<button class="play" onclick="reproducirAudio(3)">
+▶️ Escuchar
+</button>
+
+<button class="pause" onclick="pausarAudio()">
+⏸️ Pausar
+</button>
+
+<button class="stop" onclick="detenerAudio()">
+⏹️ Detener
+</button>
+
+<p id="estadoAudio3">Audio detenido</p>
+
+</div>
+
+
+<div class="pregunta">
+
+<strong>💭 Para pensar:</strong>
+
+<br><br>
+
+¿Qué relación existe entre propaganda, poder y vida cotidiana?
+
+</div>
+
+</div>
+
+</section>
+
+
+<footer>
+
+<h2>Museo Virtual de la Revolución China</h2>
+
+<p>
+Proyecto educativo — Historia
+</p>
+
+</footer>
+
+
+<!-- MODAL DE IMAGEN -->
+
+<div id="modalImagen" class="modal">
+
+<div class="modal-contenido">
+
+<span class="cerrar" onclick="cerrarImagen()">×</span>
+
+<img id="imagenGrande">
+
+</div>
+
+</div>
+
+
+<!-- MODAL DE EVENTOS -->
+
+<div id="modalEvento" class="modal">
+
+<div class="modal-contenido">
+
+<span class="cerrar" onclick="cerrarEvento()">×</span>
+
+<h2 id="eventoTitulo"></h2>
+
+<p id="eventoTexto" class="intro"></p>
+
+</div>
+
+</div>
+
+
 <script>
-const textoAudioguia = `
-Bienvenidos a esta sala del Museo Virtual de la Revolución China.
 
-En esta sala podemos observar cómo la propaganda presentó a Mao Zedong
+const audios = {
+
+1: `Bienvenidos a esta sala del Museo Virtual de la Revolución China.
+Aquí podemos observar cómo la propaganda presentó a Mao Zedong
 como una figura central del proceso revolucionario.
+En numerosos carteles Mao aparece en un lugar destacado,
+mientras que alrededor suyo se representan trabajadores,
+campesinos, jóvenes y soldados.
+Estas imágenes transmitían ideas de unidad, liderazgo y
+participación colectiva.
+La propaganda no solamente comunicaba información, sino que
+también ayudaba a construir una determinada imagen del líder
+y de la sociedad.
+Por eso es importante observar qué aparece en una imagen
+y qué aspectos quedan afuera.
+La pregunta que dejamos al visitante es:
+¿La propaganda mostraba la realidad o construía una imagen
+de cómo debía ser la sociedad?`,
 
-En numerosos carteles y publicaciones, Mao aparece en un lugar destacado,
-mientras que alrededor suyo se representan trabajadores, campesinos,
-jóvenes y soldados.
+2: `Bienvenidos a la segunda sala.
+En los carteles de propaganda podemos observar trabajadores,
+campesinos, soldados y jóvenes representados como protagonistas
+de la sociedad revolucionaria.
+Las imágenes utilizaban símbolos, colores, consignas y
+multitudes para transmitir determinados mensajes políticos.
+La propaganda podía estar presente en distintos espacios de
+la vida cotidiana y ayudaba a difundir las ideas oficiales.
+Por eso, una imagen no solamente puede mostrar un acontecimiento:
+también puede influir en la manera en que ese acontecimiento
+es interpretado.
+La pregunta para el visitante es:
+¿Cómo puede una imagen influir en nuestra interpretación
+de un acontecimiento histórico?`,
 
-Estas imágenes transmitían ideas como unidad, liderazgo y participación
-colectiva. La propaganda no solamente comunicaba información, sino que
-también buscaba transmitir una determinada imagen del líder y de la sociedad.
+3: `Bienvenidos a la tercera sala.
+La Revolución Cultural comenzó en 1966 y tuvo un fuerte impacto
+en la sociedad china.
+Durante este período, las ideas de Mao ocuparon un lugar central
+en numerosos materiales de propaganda.
+Los jóvenes, especialmente los Guardias Rojos, fueron
+representados como participantes importantes del proceso.
+La propaganda estuvo relacionada con la educación, la cultura,
+la política y diferentes aspectos de la vida cotidiana.
+Por eso, esta sala nos invita a pensar en la relación entre
+propaganda y poder.
+La pregunta final es:
+¿Qué relación existe entre propaganda, poder y vida cotidiana?`
 
-Al mismo tiempo, los carteles mostraban algunos aspectos de la realidad
-mientras dejaban otros en segundo plano. Por eso es importante analizar
-qué aparece en una imagen y qué queda afuera.
+};
 
-La propaganda estuvo relacionada con el poder porque ayudó a difundir
-mensajes oficiales y a construir una determinada representación de la
-Revolución y de sus protagonistas.
 
-La pregunta que queda para el visitante es:
+let voz = null;
 
-¿La propaganda mostraba la realidad o construía una imagen de cómo debía
-ser la sociedad?
-`;
 
-let vozActual = null;
-
-function buscarVoz() {
-    const voces = speechSynthesis.getVoices();
-
-    return voces.find(v => 
-        v.lang.toLowerCase().startsWith("es-ar")
-    ) || voces.find(v => 
-        v.lang.toLowerCase().startsWith("es")
-    ) || voces[0];
-}
-
-function reproducirAudio() {
+function reproducirAudio(numero) {
 
     speechSynthesis.cancel();
 
-    vozActual = new SpeechSynthesisUtterance(textoAudioguia);
+    voz = new SpeechSynthesisUtterance(audios[numero]);
 
-    vozActual.lang = "es-AR";
-    vozActual.rate = 0.9;
-    vozActual.pitch = 1;
-    vozActual.volume = 1;
+    voz.lang = "es-AR";
+    voz.rate = 0.9;
+    voz.pitch = 1;
+    voz.volume = 1;
 
-    const voz = buscarVoz();
+    const voces = speechSynthesis.getVoices();
 
-    if (voz) {
-        vozActual.voice = voz;
+    const vozEspanol =
+        voces.find(v => v.lang === "es-AR") ||
+        voces.find(v => v.lang.startsWith("es"));
+
+    if (vozEspanol) {
+        voz.voice = vozEspanol;
     }
 
-    vozActual.onstart = function() {
-        document.getElementById("estadoAudio").textContent =
-            "🔊 Reproduciendo audioguía...";
-    };
+    document.getElementById("estadoAudio" + numero).innerText =
+        "🔊 Reproduciendo audioguía...";
 
-    vozActual.onend = function() {
-        document.getElementById("estadoAudio").textContent =
+    voz.onend = function() {
+
+        document.getElementById("estadoAudio" + numero).innerText =
             "✅ Audioguía terminada";
+
     };
 
-    speechSynthesis.speak(vozActual);
+    speechSynthesis.speak(voz);
 }
+
 
 function pausarAudio() {
 
-    if (speechSynthesis.speaking && !speechSynthesis.paused) {
+    if (speechSynthesis.speaking) {
+
         speechSynthesis.pause();
 
-        document.getElementById("estadoAudio").textContent =
-            "⏸️ Audioguía pausada";
     }
+
 }
+
 
 function detenerAudio() {
 
     speechSynthesis.cancel();
 
-    document.getElementById("estadoAudio").textContent =
-        "⏹️ Audio detenido";
+    document.querySelectorAll("[id^='estadoAudio']").forEach(elemento => {
+
+        elemento.innerText = "⏹️ Audio detenido";
+
+    });
+
 }
 
-speechSynthesis.onvoiceschanged = function() {
-    buscarVoz();
+
+/* IMÁGENES */
+
+function abrirImagen(src) {
+
+    document.getElementById("imagenGrande").src = src;
+
+    document.getElementById("modalImagen").style.display = "block";
+
+}
+
+
+function cerrarImagen() {
+
+    document.getElementById("modalImagen").style.display = "none";
+
+}
+
+
+/* LÍNEA DE TIEMPO */
+
+const eventos = {
+
+1911: {
+titulo: "1911 — Fin del Imperio",
+texto: "La Revolución de Xinhai terminó con la caída de la dinastía Qing y puso fin al sistema imperial chino. En 1912 se estableció la República de China."
+},
+
+1921: {
+titulo: "1921 — Fundación del Partido Comunista Chino",
+texto: "El Partido Comunista de China fue fundado en 1921. Con el paso de los años se convirtió en uno de los principales actores políticos del país."
+},
+
+1927: {
+titulo: "1927 — Guerra Civil",
+texto: "Las tensiones entre el Partido Comunista y el Kuomintang desembocaron en una guerra civil que atravesó diferentes etapas y se prolongó durante años."
+},
+
+1934: {
+titulo: "1934 — La Larga Marcha",
+texto: "Las fuerzas comunistas realizaron la Larga Marcha, una retirada de miles de kilómetros que terminó reforzando el liderazgo de Mao dentro del movimiento comunista."
+},
+
+1949: {
+titulo: "1949 — República Popular China",
+texto: "El 1 de octubre de 1949 Mao Zedong proclamó la República Popular China en Pekín. Las fuerzas comunistas habían obtenido el control de gran parte de China continental después de la guerra civil."
+},
+
+1966: {
+titulo: "1966 — Revolución Cultural",
+texto: "Comenzó la Revolución Cultural, un período de grandes transformaciones políticas y sociales en China que se extendió hasta 1976."
+},
+
+1976: {
+titulo: "1976 — Muerte de Mao",
+texto: "Mao Zedong murió el 9 de septiembre de 1976. Ese mismo año terminó la Revolución Cultural."
+}
+
 };
+
+
+function abrirEvento(anio) {
+
+    document.getElementById("eventoTitulo").innerText =
+        eventos[anio].titulo;
+
+    document.getElementById("eventoTexto").innerText =
+        eventos[anio].texto;
+
+    document.getElementById("modalEvento").style.display = "block";
+
+}
+
+
+function cerrarEvento() {
+
+    document.getElementById("modalEvento").style.display = "none";
+
+}
+
+
+window.onclick = function(event) {
+
+    const modalImagen =
+        document.getElementById("modalImagen");
+
+    const modalEvento =
+        document.getElementById("modalEvento");
+
+    if (event.target === modalImagen) {
+
+        cerrarImagen();
+
+    }
+
+    if (event.target === modalEvento) {
+
+        cerrarEvento();
+
+    }
+
+};
+
 </script>
+
+</body>
+</html>
