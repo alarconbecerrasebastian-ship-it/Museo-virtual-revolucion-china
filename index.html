@@ -1,1189 +1,171 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Museo Virtual de la Revolución China</title>
-
+<!-- 🎧 AUDIOGUÍAS DEL MUSEO -->
 <style>
-
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
+.audioguia {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 15px;
+    background: #f1f1f1;
+    border: 2px solid #c9c9c9;
 }
 
-body{
-    font-family:Arial,Helvetica,sans-serif;
-    background:radial-gradient(circle at top,#650000,#120000 75%);
-    color:white;
-    min-height:100vh;
+.audioguia h3 {
+    margin-top: 0;
 }
 
-header{
-    text-align:center;
-    padding:40px 20px;
-    background:linear-gradient(135deg,#900000,#c00000,#550000);
-    border-bottom:5px solid #e7b84b;
-    box-shadow:0 5px 25px black;
+.audio-controles {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
 }
 
-header h1{
-    font-size:40px;
-    color:#ffd966;
-    text-shadow:3px 3px 6px black;
+.audio-controles button {
+    border: none;
+    border-radius: 10px;
+    padding: 12px 18px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
 }
 
-header p{
-    margin-top:12px;
-    font-size:19px;
+.btn-play {
+    background: #222;
+    color: white;
 }
 
-.herramientas{
-    text-align:center;
-    padding:15px;
-    background:#1d1d1d;
+.btn-pausa {
+    background: #777;
+    color: white;
 }
 
-button{
-    border:none;
-    background:linear-gradient(135deg,#d00000,#850000);
-    color:white;
-    padding:13px 20px;
-    margin:6px;
-    border-radius:9px;
-    font-size:16px;
-    font-weight:bold;
-    cursor:pointer;
+.btn-stop {
+    background: #b3261e;
+    color: white;
 }
 
-button:hover{
-    transform:scale(1.04);
+.audio-estado {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #555;
 }
-
-.guardar{
-    background:#087f23;
-}
-
-.restaurar{
-    background:#555;
-}
-
-main{
-    width:92%;
-    max-width:1150px;
-    margin:40px auto;
-}
-
-.pantalla{
-    display:none;
-    background:rgba(30,30,30,.97);
-    padding:40px;
-    border-radius:20px;
-    border:2px solid #e7b84b;
-    box-shadow:0 0 30px black;
-    text-align:center;
-}
-
-.pantalla.activa{
-    display:block;
-}
-
-h2{
-    color:#ffd966;
-    font-size:32px;
-    margin-bottom:25px;
-}
-
-h3{
-    color:#ffd966;
-    margin:15px 0;
-}
-
-p{
-    font-size:18px;
-    line-height:1.7;
-    margin:15px 0;
-}
-
-.texto-editable{
-    outline:none;
-}
-
-.modo-edicion .texto-editable{
-    border:2px dashed #ffd966;
-    padding:7px;
-    border-radius:7px;
-    background:#252525;
-}
-
-/* IMAGENES */
-
-.imagen-museo{
-    width:100%;
-    max-width:750px;
-    height:390px;
-    margin:30px auto;
-    background:#111;
-    border:3px solid #e7b84b;
-    border-radius:15px;
-    overflow:hidden;
-}
-
-.imagen-museo img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-}
-
-.cambiar{
-    display:inline-block;
-    background:#e7b84b;
-    color:#171717;
-    padding:11px 18px;
-    border-radius:9px;
-    cursor:pointer;
-    font-weight:bold;
-}
-
-.cambiar input{
-    display:none;
-}
-
-/* TARJETAS */
-
-.tarjetas{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:20px;
-    margin-top:25px;
-}
-
-.tarjeta{
-    background:#292929;
-    border:1px solid #777;
-    border-radius:15px;
-    padding:25px;
-    text-align:left;
-}
-
-.tarjeta h3{
-    text-align:center;
-}
-
-/* CAJAS */
-
-.caja{
-    background:#292929;
-    border-left:6px solid #d00000;
-    padding:25px;
-    margin:25px auto;
-    max-width:900px;
-    border-radius:0 12px 12px 0;
-    text-align:left;
-}
-
-/* OBJETO */
-
-.objeto-box{
-    background:#292929;
-    border:2px solid #e7b84b;
-    border-radius:15px;
-    padding:25px;
-    margin:30px auto;
-    max-width:800px;
-}
-
-.objeto{
-    font-size:90px;
-    margin:20px;
-}
-
-/* AUDIO */
-
-.audioguia{
-    background:#151515;
-    border:2px solid #e7b84b;
-    border-radius:15px;
-    padding:25px;
-    margin:30px auto;
-    max-width:900px;
-    text-align:left;
-}
-
-/* PREGUNTA */
-
-.pregunta{
-    background:linear-gradient(135deg,#420000,#220000);
-    border:2px solid #e7b84b;
-    border-radius:15px;
-    padding:30px;
-    margin-top:35px;
-}
-
-/* =====================================================
-   LINEA DEL TIEMPO
-===================================================== */
-
-.timeline{
-    max-width:900px;
-    margin:30px auto;
-}
-
-.evento{
-    background:#292929;
-    border-left:7px solid #d00000;
-    padding:22px;
-    margin:22px 0;
-    text-align:left;
-    border-radius:0 15px 15px 0;
-    cursor:pointer;
-    transition:.25s;
-}
-
-.evento:hover{
-    background:#3b3b3b;
-    transform:translateX(7px);
-}
-
-.evento .anio{
-    color:#ffd966;
-    font-size:32px;
-    font-weight:bold;
-}
-
-.evento .mini{
-    color:#ddd;
-    margin-top:8px;
-}
-
-/* =====================================================
-   VENTANA EMERGENTE
-===================================================== */
-
-.modal{
-    display:none;
-    position:fixed;
-    z-index:1000;
-    left:0;
-    top:0;
-    width:100%;
-    height:100%;
-    background:rgba(0,0,0,.85);
-    padding:30px;
-    overflow:auto;
-}
-
-.modal-contenido{
-    background:#252525;
-    max-width:850px;
-    margin:40px auto;
-    padding:30px;
-    border:3px solid #e7b84b;
-    border-radius:20px;
-    box-shadow:0 0 40px black;
-    text-align:center;
-    animation:aparecer .3s ease;
-}
-
-.modal-contenido h2{
-    margin-bottom:15px;
-}
-
-.modal-imagen{
-    width:100%;
-    max-height:420px;
-    object-fit:contain;
-    border-radius:12px;
-    margin:20px 0;
-    background:#111;
-}
-
-.cerrar{
-    background:#777;
-}
-
-@keyframes aparecer{
-
-    from{
-        opacity:0;
-        transform:scale(.9);
-    }
-
-    to{
-        opacity:1;
-        transform:scale(1);
-    }
-
-}
-
-/* =====================================================
-   FOOTER
-===================================================== */
-
-footer{
-    text-align:center;
-    padding:30px;
-    margin-top:50px;
-    background:#5c0000;
-    border-top:3px solid #e7b84b;
-}
-
-/* CELULAR */
-
-@media(max-width:750px){
-
-    header h1{
-        font-size:28px;
-    }
-
-    .pantalla{
-        padding:25px 15px;
-    }
-
-    .tarjetas{
-        grid-template-columns:1fr;
-    }
-
-    .imagen-museo{
-        height:260px;
-    }
-
-    .modal{
-        padding:10px;
-    }
-
-}
-
 </style>
-</head>
-
-<body>
-
-<header>
-
-<h1 class="texto-editable" data-id="titulo">
-🏛️ Museo Virtual de la Revolución China
-</h1>
-
-<p class="texto-editable" data-id="subtitulo">
-Propaganda, poder y vida cotidiana
-</p>
-
-</header>
-
-<div class="herramientas">
-
-<button onclick="activarEdicion()">
-✏️ Editar textos
-</button>
-
-<button class="guardar" onclick="guardarTodo()">
-💾 Guardar cambios
-</button>
-
-<button class="restaurar" onclick="restaurarTodo()">
-🔄 Restaurar
-</button>
-
-</div>
-
-<main>
-
-<!-- ================= INICIO ================= -->
-
-<section id="inicio" class="pantalla activa">
-
-<h2>🇨🇳 Bienvenidos al Museo</h2>
-
-<p class="texto-editable" data-id="inicio">
-Este museo virtual presenta la Revolución China de 1949
-y analiza especialmente la construcción de la imagen de Mao,
-la propaganda, el poder y la vida cotidiana.
-</p>
-
-<div class="imagen-museo">
-
-<img
-src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Mao_Zedong_in_1949.png"
-alt="Mao Zedong en 1949">
-
-</div>
-
-<button onclick="mostrarSala('sala1')">
-🚪 Comenzar recorrido
-</button>
-
-</section>
-
-
-<!-- ================= SALA 1 ================= -->
-
-<section id="sala1" class="pantalla">
-
-<h2>🏺 Sala 1 — La Revolución China de 1949</h2>
-
-<p class="texto-editable" data-id="sala1texto">
-
-Durante la primera mitad del siglo XX, China atravesó
-grandes conflictos políticos y sociales. El Partido
-Comunista Chino y el Kuomintang se enfrentaron durante
-una larga Guerra Civil.
-
-En 1949, las fuerzas comunistas obtuvieron el control
-de China continental y Mao Zedong proclamó la República
-Popular China el 1 de octubre de ese año.
-
-</p>
-
-<div class="imagen-museo">
-
-<img
-src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Mao_Zedong_in_1949.png"
-alt="Mao Zedong en Tiananmen">
-
-</div>
-
-<div class="caja">
-
-<h3>📌 ¿Qué cambió en 1949?</h3>
-
-<p class="texto-editable" data-id="sala1cambio">
-
-La victoria comunista produjo un cambio político
-fundamental y dio origen a la República Popular China.
-Mao pasó a ocupar un lugar central en el nuevo Estado.
-
-</p>
-
-</div>
-
-<button onclick="mostrarSala('inicio')">
-⬅️ Volver
-</button>
-
-<button onclick="mostrarSala('sala2')">
-➡️ Siguiente
-</button>
-
-</section>
-
-
-<!-- ================= SALA 2 ================= -->
-
-<section id="sala2" class="pantalla">
-
-<h2>🚩 Sala 2 — La imagen de Mao</h2>
-
-<div class="imagen-museo">
-
-<img
-src="https://cdn.loc.gov/service/pnp/cph/3g00000/3g03000/3g03300/3g03376_150px.jpg"
-alt="Propaganda de Mao">
-
-</div>
-
-<div class="caja">
-
-<h3>👥 ¿Qué personas aparecen?</h3>
-
-<p>
-Mao aparece como figura central y una multitud
-aparece alrededor de él.
-</p>
-
-<h3>🎨 ¿Cómo están representadas?</h3>
-
-<p>
-Mao aparece idealizado y destacado visualmente.
-La multitud aparece reunida y entusiasmada.
-</p>
-
-<h3>⭐ ¿Qué valores transmite?</h3>
-
-<p>
-Unidad, liderazgo, entusiasmo revolucionario
-y fuerza colectiva.
-</p>
-
-<h3>📢 ¿Qué mensaje intenta instalar?</h3>
-
-<p>
-La imagen presenta a Mao como una figura central
-y guía de la revolución.
-</p>
-
-<h3>🔎 ¿Qué muestra y qué queda afuera?</h3>
-
-<p>
-Muestra una sociedad organizada y entusiasta,
-pero no representa todos los conflictos,
-desacuerdos o dificultades de la vida cotidiana.
-</p>
-
-</div>
-
-<div class="objeto-box">
-
-<h3>📕 Objeto simbólico: El Libro Rojo</h3>
-
-<div class="objeto">📕</div>
-
-<p>
-El Libro Rojo representa la difusión de las ideas
-de Mao y la presencia de la política en la vida cotidiana.
-</p>
-
-</div>
 
 <div class="audioguia">
+    <h3>🎧 Audioguía</h3>
 
-<h3>🎧 Audioguía</h3>
+    <p>
+        Escuchá la explicación de esta sala sobre la propaganda,
+        Mao y la Revolución China.
+    </p>
 
-<p>
-En esta sala observamos cómo la propaganda ayudó
-a construir una determinada imagen de Mao. Los carteles
-utilizaban símbolos, colores, multitudes y posiciones
-centrales para presentar al líder de una manera específica.
-</p>
+    <div class="audio-controles">
+        <button class="btn-play" onclick="reproducirAudio()">
+            ▶️ Escuchar audioguía
+        </button>
 
+        <button class="btn-pausa" onclick="pausarAudio()">
+            ⏸️ Pausar
+        </button>
+
+        <button class="btn-stop" onclick="detenerAudio()">
+            ⏹️ Detener
+        </button>
+    </div>
+
+    <div class="audio-estado" id="estadoAudio">
+        Audio detenido
+    </div>
 </div>
-
-<div class="pregunta">
-
-<h3>❓ Para pensar</h3>
-
-<p>
-¿La propaganda mostraba cómo era Mao o construía
-una imagen de cómo debía verlo la sociedad?
-</p>
-
-</div>
-
-<button onclick="mostrarSala('sala1')">
-⬅️ Anterior
-</button>
-
-<button onclick="mostrarSala('sala3')">
-➡️ Siguiente
-</button>
-
-</section>
-
-
-<!-- ================= SALA 3 ================= -->
-
-<section id="sala3" class="pantalla">
-
-<h2>📢 Sala 3 — Propaganda y vida cotidiana</h2>
-
-<div class="imagen-museo">
-
-<img
-src="https://cdn.loc.gov/service/pnp/cph/3g00000/3g03000/3g03300/3g03377_150px.jpg"
-alt="Propaganda de la Revolución Cultural">
-
-</div>
-
-<div class="tarjetas">
-
-<div class="tarjeta">
-
-<h3>👨‍🌾 Campesinos</h3>
-
-<p>
-La propaganda podía mostrar a los campesinos
-como protagonistas de la transformación social.
-</p>
-
-</div>
-
-<div class="tarjeta">
-
-<h3>👷 Trabajadores</h3>
-
-<p>
-Los trabajadores aparecían relacionados con
-el esfuerzo y la producción.
-</p>
-
-</div>
-
-<div class="tarjeta">
-
-<h3>🎖️ Soldados</h3>
-
-<p>
-Los soldados podían representar disciplina
-y compromiso con la revolución.
-</p>
-
-</div>
-
-<div class="tarjeta">
-
-<h3>📕 Símbolos</h3>
-
-<p>
-Libros, banderas, retratos y colores ayudaban
-a transmitir mensajes políticos.
-</p>
-
-</div>
-
-</div>
-
-<div class="objeto-box">
-
-<h3>🚩 Objeto simbólico: Cartel político</h3>
-
-<div class="objeto">🚩</div>
-
-<p>
-El cartel representa la manera en que un mensaje
-político podía ocupar espacios públicos y llegar
-a muchas personas.
-</p>
-
-</div>
-
-<div class="audioguia">
-
-<h3>🎧 Audioguía</h3>
-
-<p>
-La propaganda podía formar parte de la vida cotidiana
-mediante carteles, publicaciones, actos públicos
-y otros espacios. Las imágenes mostraban modelos
-de conducta y valores relacionados con la revolución.
-</p>
-
-</div>
-
-<div class="pregunta">
-
-<h3>❓ Para pensar</h3>
-
-<p>
-¿Hasta qué punto una imagen puede influir en la
-forma en que una sociedad piensa sobre su realidad?
-</p>
-
-</div>
-
-<button onclick="mostrarSala('sala2')">
-⬅️ Anterior
-</button>
-
-<button onclick="mostrarSala('sala4')">
-➡️ Siguiente
-</button>
-
-</section>
-
-
-<!-- ================= SALA 4 ================= -->
-
-<section id="sala4" class="pantalla">
-
-<h2>⚖️ Sala 4 — Propaganda y poder</h2>
-
-<div class="caja">
-
-<h3>🏛️ Propaganda y poder</h3>
-
-<p>
-La propaganda podía utilizarse para transmitir
-mensajes políticos y reforzar determinadas
-representaciones del liderazgo y de la sociedad.
-</p>
-
-<h3>👤 La figura de Mao</h3>
-
-<p>
-Los retratos y las representaciones de Mao
-aparecían repetidamente en materiales políticos.
-</p>
-
-<h3>🔴 Recursos propagandísticos</h3>
-
-<p>
-Colores, símbolos, banderas, multitudes, libros,
-frases y retratos ayudaban a transmitir los mensajes.
-</p>
-
-<h3>🔎 Mirada crítica</h3>
-
-<p>
-Para analizar propaganda podemos preguntar quién
-creó la imagen, a quién estaba dirigida, qué mensaje
-transmite y qué aspectos de la realidad quedan fuera.
-</p>
-
-</div>
-
-<div class="objeto-box">
-
-<h3>📕 Objeto simbólico</h3>
-
-<div class="objeto">📕</div>
-
-<p>
-El Libro Rojo representa la difusión de las ideas
-de Mao y su presencia en la cultura política
-durante la Revolución Cultural.
-</p>
-
-</div>
-
-<div class="audioguia">
-
-<h3>🎧 Audioguía</h3>
-
-<p>
-La propaganda y el poder estuvieron relacionados
-porque las imágenes podían transmitir determinadas
-ideas sobre los líderes, la revolución y la sociedad.
-Analizar estas imágenes permite observar cómo
-se construían esos mensajes.
-</p>
-
-</div>
-
-<div class="pregunta">
-
-<h3>❓ Para pensar</h3>
-
-<p>
-¿La propaganda describía la sociedad o intentaba
-mostrar cómo debía ser la sociedad?
-</p>
-
-</div>
-
-<button onclick="mostrarSala('sala3')">
-⬅️ Anterior
-</button>
-
-<button onclick="mostrarSala('sala5')">
-➡️ Línea del tiempo
-</button>
-
-</section>
-
-
-<!-- ================= SALA 5 ================= -->
-
-<section id="sala5" class="pantalla">
-
-<h2>🕰️ Línea del tiempo</h2>
-
-<p>
-<strong>👆 Tocá cualquier año para conocer qué ocurrió.</strong>
-</p>
-
-<div class="timeline">
-
-
-<div class="evento"
-onclick="abrirEvento(
-'1911',
-'La Revolución Xinhai provocó la caída de la dinastía Qing y el final del Imperio chino. Este proceso abrió una nueva etapa política en China.',
-'https://upload.wikimedia.org/wikipedia/commons/1/17/WuchangUprising.jpg'
-)">
-
-<div class="anio">1911</div>
-
-<div class="mini">
-🇨🇳 Revolución Xinhai y caída de la dinastía Qing
-</div>
-
-</div>
-
-
-<div class="evento"
-onclick="abrirEvento(
-'1921',
-'Se fundó el Partido Comunista Chino en Shanghai. Con el tiempo se convertiría en uno de los principales protagonistas de la historia política china del siglo XX.',
-'https://upload.wikimedia.org/wikipedia/commons/9/96/Location_of_the_First_Congress_of_the_Chinese_Communist_Party_Xintiandi_Shanghai_July_1921.jpg'
-)">
-
-<div class="anio">1921</div>
-
-<div class="mini">
-🔴 Fundación del Partido Comunista Chino
-</div>
-
-</div>
-
-
-<div class="evento"
-onclick="abrirEvento(
-'1937',
-'Comenzó la guerra a gran escala entre China y Japón. El conflicto afectó profundamente a la población y a la política china.',
-'https://upload.wikimedia.org/wikipedia/commons/8/82/Shanghai_Nanjing_1937.jpg'
-)">
-
-<div class="anio">1937</div>
-
-<div class="mini">
-⚔️ Guerra contra Japón
-</div>
-
-</div>
-
-
-<div class="evento"
-onclick="abrirEvento(
-'1946',
-'Después de la Segunda Guerra Mundial se reanudó la Guerra Civil China entre el Partido Comunista y el Kuomintang.',
-'https://upload.wikimedia.org/wikipedia/commons/5/5d/Civil_war_1946.jpg'
-)">
-
-<div class="anio">1946</div>
-
-<div class="mini">
-⚔️ Reanudación de la Guerra Civil
-</div>
-
-</div>
-
-
-<div class="evento"
-onclick="abrirEvento(
-'1949',
-'El 1 de octubre de 1949, Mao Zedong proclamó la República Popular China en Beijing, después de la victoria comunista en la Guerra Civil.',
-'https://upload.wikimedia.org/wikipedia/commons/7/7e/Mao_Zedong_in_1949.png'
-)">
-
-<div class="anio">1949</div>
-
-<div class="mini">
-🇨🇳 Proclamación de la República Popular China
-</div>
-
-</div>
-
-
-<div class="evento"
-onclick="abrirEvento(
-'1966',
-'Comenzó la Revolución Cultural. Durante este período se desarrolló una intensa movilización política y la propaganda en torno a Mao tuvo una presencia muy importante.',
-'https://cdn.loc.gov/service/pnp/cph/3g00000/3g03000/3g03300/3g03376_150px.jpg'
-)">
-
-<div class="anio">1966</div>
-
-<div class="mini">
-📢 Inicio de la Revolución Cultural
-</div>
-
-</div>
-
-
-<div class="evento"
-onclick="abrirEvento(
-'1976',
-'Mao Zedong murió el 9 de septiembre de 1976. Ese mismo año terminó la Revolución Cultural.',
-'https://upload.wikimedia.org/wikipedia/commons/6/6d/China_1976-072_Mourning_for_Mao.jpg'
-)">
-
-<div class="anio">1976</div>
-
-<div class="mini">
-🕊️ Muerte de Mao y final de la Revolución Cultural
-</div>
-
-</div>
-
-
-</div>
-
-
-<div class="pregunta">
-
-<h3>❓ Conclusión final</h3>
-
-<p>
-La propaganda puede ser estudiada como una forma
-de comunicación política. Al analizar sus imágenes
-podemos observar qué mensajes transmite, qué valores
-presenta y qué aspectos de la realidad quedan fuera.
-</p>
-
-<h3>
-¿La propaganda mostraba la realidad o construía
-una imagen de cómo debía ser la sociedad?
-</h3>
-
-</div>
-
-
-<button onclick="mostrarSala('sala4')">
-⬅️ Anterior
-</button>
-
-<button onclick="mostrarSala('inicio')">
-🏠 Volver al inicio
-</button>
-
-</section>
-
-</main>
-
-
-<!-- =====================================================
-MODAL DE LA LINEA DEL TIEMPO
-===================================================== -->
-
-<div id="modal" class="modal">
-
-<div class="modal-contenido">
-
-<h2 id="modalTitulo"></h2>
-
-<img
-id="modalImagen"
-class="modal-imagen"
-src=""
-alt="Imagen histórica">
-
-<p id="modalTexto"></p>
-
-<button class="cerrar" onclick="cerrarEvento()">
-✖️ Cerrar
-</button>
-
-</div>
-
-</div>
-
-
-<footer>
-
-<p>
-🏛️ Museo Virtual de la Revolución China — Proyecto escolar
-</p>
-
-</footer>
-
 
 <script>
+const textoAudioguia = `
+Bienvenidos a esta sala del Museo Virtual de la Revolución China.
 
-/* ===============================
-CAMBIAR SALA
-================================ */
+En esta sala podemos observar cómo la propaganda presentó a Mao Zedong
+como una figura central del proceso revolucionario.
 
-function mostrarSala(sala){
+En numerosos carteles y publicaciones, Mao aparece en un lugar destacado,
+mientras que alrededor suyo se representan trabajadores, campesinos,
+jóvenes y soldados.
 
-    document.querySelectorAll(".pantalla")
-    .forEach(function(p){
+Estas imágenes transmitían ideas como unidad, liderazgo y participación
+colectiva. La propaganda no solamente comunicaba información, sino que
+también buscaba transmitir una determinada imagen del líder y de la sociedad.
 
-        p.classList.remove("activa");
+Al mismo tiempo, los carteles mostraban algunos aspectos de la realidad
+mientras dejaban otros en segundo plano. Por eso es importante analizar
+qué aparece en una imagen y qué queda afuera.
 
-    });
+La propaganda estuvo relacionada con el poder porque ayudó a difundir
+mensajes oficiales y a construir una determinada representación de la
+Revolución y de sus protagonistas.
 
-    document.getElementById(sala)
-    .classList.add("activa");
+La pregunta que queda para el visitante es:
 
-    window.scrollTo({
-        top:0,
-        behavior:"smooth"
-    });
+¿La propaganda mostraba la realidad o construía una imagen de cómo debía
+ser la sociedad?
+`;
+
+let vozActual = null;
+
+function buscarVoz() {
+    const voces = speechSynthesis.getVoices();
+
+    return voces.find(v => 
+        v.lang.toLowerCase().startsWith("es-ar")
+    ) || voces.find(v => 
+        v.lang.toLowerCase().startsWith("es")
+    ) || voces[0];
 }
 
+function reproducirAudio() {
 
-/* ===============================
-ABRIR EVENTO
-================================ */
+    speechSynthesis.cancel();
 
-function abrirEvento(anio,texto,imagen){
+    vozActual = new SpeechSynthesisUtterance(textoAudioguia);
 
-    document.getElementById("modalTitulo")
-    .innerText = "📜 " + anio;
+    vozActual.lang = "es-AR";
+    vozActual.rate = 0.9;
+    vozActual.pitch = 1;
+    vozActual.volume = 1;
 
-    document.getElementById("modalTexto")
-    .innerText = texto;
+    const voz = buscarVoz();
 
-    document.getElementById("modalImagen")
-    .src = imagen;
-
-    document.getElementById("modal")
-    .style.display = "block";
-}
-
-
-/* ===============================
-CERRAR EVENTO
-================================ */
-
-function cerrarEvento(){
-
-    document.getElementById("modal")
-    .style.display = "none";
-}
-
-
-/* Cerrar tocando fuera */
-
-window.onclick = function(event){
-
-    const modal =
-        document.getElementById("modal");
-
-    if(event.target === modal){
-
-        cerrarEvento();
-
+    if (voz) {
+        vozActual.voice = voz;
     }
 
+    vozActual.onstart = function() {
+        document.getElementById("estadoAudio").textContent =
+            "🔊 Reproduciendo audioguía...";
+    };
+
+    vozActual.onend = function() {
+        document.getElementById("estadoAudio").textContent =
+            "✅ Audioguía terminada";
+    };
+
+    speechSynthesis.speak(vozActual);
+}
+
+function pausarAudio() {
+
+    if (speechSynthesis.speaking && !speechSynthesis.paused) {
+        speechSynthesis.pause();
+
+        document.getElementById("estadoAudio").textContent =
+            "⏸️ Audioguía pausada";
+    }
+}
+
+function detenerAudio() {
+
+    speechSynthesis.cancel();
+
+    document.getElementById("estadoAudio").textContent =
+        "⏹️ Audio detenido";
+}
+
+speechSynthesis.onvoiceschanged = function() {
+    buscarVoz();
 };
-
-
-/* ===============================
-EDITAR TEXTOS
-================================ */
-
-let modoEdicion=false;
-
-function activarEdicion(){
-
-    modoEdicion=!modoEdicion;
-
-    document.body.classList.toggle(
-        "modo-edicion",
-        modoEdicion
-    );
-
-    document
-    .querySelectorAll(".texto-editable")
-    .forEach(function(texto){
-
-        texto.contentEditable=modoEdicion;
-
-    });
-
-    if(modoEdicion){
-
-        alert(
-            "✏️ Modo edición activado.\n\n" +
-            "Tocá un texto para modificarlo.\n\n" +
-            "Después presioná Guardar cambios."
-        );
-
-    }
-}
-
-
-/* ===============================
-GUARDAR
-================================ */
-
-function guardarTodo(){
-
-    document
-    .querySelectorAll(".texto-editable")
-    .forEach(function(texto){
-
-        const id=texto.dataset.id;
-
-        if(id){
-
-            localStorage.setItem(
-                "museo-"+id,
-                texto.innerHTML
-            );
-
-        }
-
-    });
-
-    alert(
-        "✅ Cambios guardados en este dispositivo."
-    );
-}
-
-
-/* ===============================
-CARGAR
-================================ */
-
-function cargarTodo(){
-
-    document
-    .querySelectorAll(".texto-editable")
-    .forEach(function(texto){
-
-        const id=texto.dataset.id;
-
-        const guardado=
-            localStorage.getItem("museo-"+id);
-
-        if(guardado!==null){
-
-            texto.innerHTML=guardado;
-
-        }
-
-    });
-
-}
-
-
-/* ===============================
-RESTAURAR
-================================ */
-
-function restaurarTodo(){
-
-    if(!confirm(
-        "¿Querés restaurar los textos originales?"
-    )){
-
-        return;
-
-    }
-
-    const claves=[];
-
-    for(
-        let i=0;
-        i<localStorage.length;
-        i++
-    ){
-
-        const clave=localStorage.key(i);
-
-        if(clave.startsWith("museo-")){
-
-            claves.push(clave);
-
-        }
-
-    }
-
-    claves.forEach(function(clave){
-
-        localStorage.removeItem(clave);
-
-    });
-
-    location.reload();
-}
-
-
-/* ===============================
-INICIAR
-================================ */
-
-window.onload=function(){
-
-    cargarTodo();
-
-};
-
 </script>
-
-</body>
-</html>
