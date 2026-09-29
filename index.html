@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Museo Virtual - Revolución China</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background:
+        radial-gradient(circle at top, #3b0000, #120000 65%);
+    color: white;
+    min-height: 100vh;
+}
+
+/* CABECERA */
+
+header {
+    text-align: center;
+    padding: 45px 20px;
+    background: linear-gradient(135deg, #850000, #c00000, #5c0000);
+    border-bottom: 5px solid #e7b84b;
+    box-shadow: 0 5px 20px black;
+}
+
+header h1 {
+    font-size: 42px;
+    color: #ffd966;
+    text-shadow: 3px 3px 5px black;
+}
+
+header p {
+    margin-top: 12px;
+    font-size: 19px;
+}
+
+/* CONTENEDOR */
+
+main {
+    width: 90%;
+    max-width: 1100px;
+    margin: 40px auto;
+}
+
+/* SALAS */
+
+.pantalla {
+    display: none;
+    background: rgba(30, 30, 30, 0.96);
+    padding: 40px;
+    border-radius: 20px;
+    border: 2px solid #e7b84b;
+    box-shadow: 0 0 30px black;
+    text-align: center;
+    animation: aparecer 0.5s ease;
+}
+
+.pantalla.activa {
+    display: block;
+}
+
+@keyframes aparecer {
+
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+h2 {
+    color: #ffd966;
+    font-size: 32px;
+    margin-bottom: 25px;
+}
+
+h3 {
+    color: #ffd966;
+    margin: 15px 0;
+}
+
+p {
+    font-size: 18px;
+    line-height: 1.7;
+    margin: 15px 0;
+}
+
+/* IMÁGENES */
+
+.imagen-museo {
+    width: 100%;
+    max-width: 750px;
+    height: 380px;
+    margin: 30px auto;
+    background: #111;
+    border: 3px solid #e7b84b;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 0 20px black;
+}
+
+.imagen-museo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* CAMBIAR IMAGEN */
+
+.cambiar {
+    display: inline-block;
+    background: #e7b84b;
+    color: #171717;
+    padding: 12px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    margin: 10px;
+    transition: 0.2s;
+}
+
+.cambiar:hover {
+    transform: scale(1.05);
+    background: #ffe69b;
+}
+
+.cambiar input {
+    display: none;
+}
+
+/* BOTONES */
+
+button {
+    border: none;
+    background: linear-gradient(135deg, #d00000, #8b0000);
+    color: white;
+    padding: 14px 25px;
+    margin: 10px 5px;
+    border-radius: 10px;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    border: 1px solid #ff5c5c;
+    transition: 0.2s;
+}
+
+button:hover {
+    transform: scale(1.06);
+    background: #e00000;
+}
+
+/* PERSONAJES */
+
+.personajes {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.personaje {
+    background: #292929;
+    border: 1px solid #777;
+    border-radius: 15px;
+    padding: 20px;
+    width: 48%;
+}
+
+.personaje img {
+    width: 100%;
+    height: 270px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 2px solid #e7b84b;
+}
+
+/* FECHA */
+
+.fecha {
+    font-size: 90px;
+    font-weight: bold;
+    color: #ffd966;
+    text-shadow: 4px 4px 10px black;
+    margin: 25px;
+}
+
+/* LISTA */
+
+ul {
+    max-width: 800px;
+    margin: 30px auto;
+    text-align: left;
+}
+
+li {
+    font-size: 18px;
+    margin: 18px 0;
+    line-height: 1.5;
+}
+
+/* LINEA DEL TIEMPO */
+
+.timeline {
+    max-width: 800px;
+    margin: auto;
+}
+
+.evento {
+    background: #292929;
+    border-left: 6px solid #d00000;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 0 12px 12px 0;
+    text-align: left;
+    transition: 0.2s;
+}
+
+.evento:hover {
+    transform: translateX(8px);
+    border-left-color: #ffd966;
+}
+
+.evento strong {
+    font-size: 28px;
+    color: #ffd966;
+}
+
+/* MAPA */
+
+.mapa {
+    font-size: 120px;
+    margin: 30px;
+}
+
+/* PIE */
+
+footer {
+    text-align: center;
+    padding: 30px;
+    margin-top: 50px;
+    background: #5c0000;
+    border-top: 3px solid #e7b84b;
+}
+
+footer p {
+    font-size: 15px;
+}
+
+/* CELULAR */
+
+@media (max-width: 700px) {
+
+    header h1 {
+        font-size: 29px;
+    }
+
+    .pantalla {
+        padding: 25px 15px;
+    }
+
+    .personajes {
+        flex-direction: column;
+    }
+
+    .personaje {
+        width: 100%;
+    }
+
+    .imagen-museo {
+        height: 250px;
+    }
+
+    .fecha {
+        font-size: 60px;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+```
+<h1>🏛️ Museo Virtual de la Revolución China</h1>
+
+<p>
+    Un recorrido histórico por la Revolución China de 1949
+</p>
+```
+
+</header>
+
+<main>
+
+<!-- ================= INICIO ================= -->
+
+<section id="inicio" class="pantalla activa">
+
+```
+<h2>🇨🇳 Bienvenido al Museo</h2>
+
+<p>
+    Bienvenido a este museo virtual dedicado a la Revolución China.
+    Recorrerás diferentes salas para conocer los principales
+    acontecimientos que transformaron China durante el siglo XX.
+</p>
+
+<div class="imagen-museo">
+
+    <img
+    id="imagenInicio"
+    src="https://upload.wikimedia.org/wikipedia/commons/6/6f/Mao_Zedong_1949.jpg"
+    alt="Mao Zedong">
+
+</div>
+
+<label class="cambiar">
+
+    🖼️ Cambiar imagen
+
+    <input
+    type="file"
+    accept="image/*"
+    onchange="cambiarImagen(this,'imagenInicio')">
+
+</label>
+
+<br>
+
+<button onclick="mostrarSala('sala1')">
+    🚪 Entrar al museo
+</button>
+```
+
+</section>
+
+<!-- ================= SALA 1 ================= -->
+
+<section id="sala1" class="pantalla">
+
+```
+<h2>🏺 Sala 1 — China antes de la Revolución</h2>
+
+<p>
+    A comienzos del siglo XX, China atravesaba una etapa de grandes
+    dificultades políticas, económicas y sociales.
+</p>
+
+<p>
+    En 1911 cayó la dinastía Qing y se estableció la República de China.
+    Sin embargo, el país continuó atravesando conflictos internos y
+    enfrentamientos entre diferentes grupos políticos.
+</p>
+
+<div class="imagen-museo">
+
+    <img
+    id="imagenChina"
+    src="https://upload.wikimedia.org/wikipedia/commons/1/1c/China_1912-1949.png"
+    alt="Mapa histórico de China">
+
+</div>
+
+<label class="cambiar">
+
+    🖼️ Cambiar imagen
+
+    <input
+    type="file"
+    accept="image/*"
+    onchange="cambiarImagen(this,'imagenChina')">
+
+</label>
+
+<br>
+
+<button onclick="mostrarSala('inicio')">
+    ⬅️ Volver
+</button>
+
+<button onclick="mostrarSala('sala2')">
+    ➡️ Siguiente sala
+</button>
+```
+
+</section>
+
+<!-- ================= SALA 2 ================= -->
+
+<section id="sala2" class="pantalla">
+
+```
+<h2>⚔️ Sala 2 — La Guerra Civil China</h2>
+
+<p>
+    La Guerra Civil China enfrentó principalmente al
+    Partido Comunista Chino y al Kuomintang.
+</p>
+
+<div class="personajes">
+
+    <div class="personaje">
+
+        <h3>🚩 Mao Zedong</h3>
+
+        <img
+        id="imagenMao"
+        src="https://upload.wikimedia.org/wikipedia/commons/6/6f/Mao_Zedong_1949.jpg"
+        alt="Mao Zedong">
+
+        <label class="cambiar">
+
+            Cambiar imagen
+
+            <input
+            type="file"
+            accept="image/*"
+            onchange="cambiarImagen(this,'imagenMao')">
+
+        </label>
+
+        <p>
+            Mao Zedong fue uno de los principales dirigentes
+            del Partido Comunista Chino.
+        </p>
+
+    </div>
+
+
+    <div class="personaje">
+
+        <h3>🏛️ Chiang Kai-shek</h3>
+
+        <img
+        id="imagenChiang"
+        src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Chiang_Kai-shek.jpg"
+        alt="Chiang Kai-shek">
+
+        <label class="cambiar">
+
+            Cambiar imagen
+
+            <input
+            type="file"
+            accept="image/*"
+            onchange="cambiarImagen(this,'imagenChiang')">
+
+        </label>
+
+        <p>
+            Chiang Kai-shek fue el principal dirigente
+            del Kuomintang durante gran parte del conflicto.
+        </p>
+
+    </div>
+
+</div>
+
+<br>
+
+<button onclick="mostrarSala('sala1')">
+    ⬅️ Anterior
+</button>
+
+<button onclick="mostrarSala('sala3')">
+    ➡️ Siguiente
+</button>
+```
+
+</section>
+
+<!-- ================= SALA 3 ================= -->
+
+<section id="sala3" class="pantalla">
+
+```
+<h2>🚩 Sala 3 — El año 1949</h2>
+
+<h3>1 de octubre de 1949</h3>
+
+<p>
+    El 1 de octubre de 1949, Mao Zedong proclamó en Pekín
+    la creación de la República Popular China.
+</p>
+
+<div class="imagen-museo">
+
+    <img
+    id="imagen1949"
+    src="https://upload.wikimedia.org/wikipedia/commons/5/5f/Mao_Zedong_1949.jpg"
+    alt="Mao Zedong en 1949">
+
+</div>
+
+<label class="cambiar">
+
+    🖼️ Cambiar imagen
+
+    <input
+    type="file"
+    accept="image/*"
+    onchange="cambiarImagen(this,'imagen1949')">
+
+</label>
+
+<div class="fecha">
+    1949
+</div>
+
+<button onclick="mostrarSala('sala2')">
+    ⬅️ Anterior
+</button>
+
+<button onclick="mostrarSala('sala4')">
+    ➡️ Siguiente
+</button>
+```
+
+</section>
+
+<!-- ================= SALA 4 ================= -->
+
+<section id="sala4" class="pantalla">
+
+```
+<h2>🌎 Sala 4 — Consecuencias</h2>
+
+<div class="imagen-museo">
+
+    <img
+    id="imagenConsecuencias"
+    src="https://upload.wikimedia.org/wikipedia/commons/0/0c/Flag_of_the_People%27s_Republic_of_China.svg"
+    alt="Bandera de China">
+
+</div>
+
+<label class="cambiar">
+
+    🖼️ Cambiar imagen
+
+    <input
+    type="file"
+    accept="image/*"
+    onchange="cambiarImagen(this,'imagenConsecuencias')">
+
+</label>
+
+<ul>
+
+    <li>
+        Se estableció la República Popular China.
+    </li>
+
+    <li>
+        El gobierno nacionalista se trasladó a Taiwán.
+    </li>
+
+    <li>
+        El Partido Comunista pasó a controlar China continental.
+    </li>
+
+    <li>
+        Comenzaron importantes transformaciones políticas,
+        económicas y sociales.
+    </li>
+
+    <li>
+        La revolución tuvo gran importancia durante la Guerra Fría.
+    </li>
+
+</ul>
+
+<button onclick="mostrarSala('sala3')">
+    ⬅️ Anterior
+</button>
+
+<button onclick="mostrarSala('sala5')">
+    🕰️ Línea del tiempo
+</button>
+```
+
+</section>
+
+<!-- ================= SALA 5 ================= -->
+
+<section id="sala5" class="pantalla">
+
+```
+<h2>🕰️ Sala 5 — Línea del tiempo</h2>
+
+<div class="timeline">
+
+    <div class="evento">
+
+        <strong>1911</strong>
+
+        <p>
+            Revolución Xinhai y caída de la dinastía Qing.
+        </p>
+
+    </div>
+
+
+    <div class="evento">
+
+        <strong>1921</strong>
+
+        <p>
+            Fundación del Partido Comunista Chino.
+        </p>
+
+    </div>
+
+
+    <div class="evento">
+
+        <strong>1937</strong>
+
+        <p>
+            Comienza la guerra a gran escala contra Japón.
+        </p>
+
+    </div>
+
+
+    <div class="evento">
+
+        <strong>1946</strong>
+
+        <p>
+            Se reanuda la Guerra Civil China.
+        </p>
+
+    </div>
+
+
+    <div class="evento">
+
+        <strong>1949</strong>
+
+        <p>
+            Proclamación de la República Popular China.
+        </p>
+
+    </div>
+
+</div>
+
+<br>
+
+<button onclick="mostrarSala('sala4')">
+    ⬅️ Anterior
+</button>
+
+<button onclick="mostrarSala('inicio')">
+    🏠 Volver al inicio
+</button>
+```
+
+</section>
+
+</main>
+
+<footer>
+
+```
+<p>
+    🏛️ Museo Virtual de Historia — Revolución China de 1949
+</p>
+
+<p>
+    Proyecto escolar
+</p>
+```
+
+</footer>
+
+<script>
+
+function mostrarSala(sala) {
+
+    const pantallas =
+        document.querySelectorAll(".pantalla");
+
+    pantallas.forEach(function(pantalla) {
+
+        pantalla.classList.remove("activa");
+
+    });
+
+    document
+        .getElementById(sala)
+        .classList.add("activa");
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+
+function cambiarImagen(input, idImagen) {
+
+    const archivo = input.files[0];
+
+    if (!archivo) {
+        return;
+    }
+
+    const lector = new FileReader();
+
+    lector.onload = function(e) {
+
+        document
+            .getElementById(idImagen)
+            .src = e.target.result;
+
+    };
+
+    lector.readAsDataURL(archivo);
+}
+
+</script>
+
+</body>
+</html>
