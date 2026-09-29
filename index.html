@@ -3,752 +3,426 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Museo Virtual - Revolución China</title>
+<title>Museo Virtual de la Revolución China</title>
 
 <style>
-
-* {
-    box-sizing: border-box;
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#111;
+    color:white;
 }
 
-body {
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background: #101010;
-    color: white;
+header{
+    background:linear-gradient(135deg,#8b0000,#1a0000);
+    padding:50px 20px;
+    text-align:center;
 }
 
-header {
-    padding: 100px 20px;
-    text-align: center;
-    background:
-        linear-gradient(rgba(0,0,0,.65),rgba(0,0,0,.8)),
-        url("https://commons.wikimedia.org/wiki/Special:FilePath/Mao%20Zedong%20in%201949.png")
-        center/cover;
+header h1{
+    font-size:42px;
+    margin:0;
 }
 
-header h1 {
-    font-size: clamp(42px, 7vw, 80px);
-    margin: 0;
+header p{
+    font-size:20px;
 }
 
-header p {
-    font-size: 22px;
+nav{
+    background:#222;
+    padding:15px;
+    text-align:center;
+    position:sticky;
+    top:0;
+    z-index:10;
 }
 
-nav {
-    position: sticky;
-    top: 0;
-    z-index: 20;
-    background: #191919;
-    padding: 15px;
-    text-align: center;
-    border-bottom: 1px solid #444;
+nav button{
+    background:#8b0000;
+    color:white;
+    border:none;
+    padding:12px 18px;
+    margin:5px;
+    border-radius:8px;
+    cursor:pointer;
 }
 
-nav a {
-    color: white;
-    text-decoration: none;
-    margin: 10px;
-    font-weight: bold;
+nav button:hover{
+    background:#c00000;
 }
 
-section {
-    max-width: 1150px;
-    margin: auto;
-    padding: 70px 20px;
+.sala{
+    max-width:1000px;
+    margin:40px auto;
+    padding:35px;
+    background:#1d1d1d;
+    border-radius:15px;
+    box-shadow:0 0 20px #000;
 }
 
-h2 {
-    font-size: 40px;
+.sala h2{
+    color:#ff4444;
+    font-size:30px;
 }
 
-.intro {
-    font-size: 19px;
-    line-height: 1.7;
-    color: #ddd;
+.sala img{
+    width:100%;
+    max-height:600px;
+    object-fit:contain;
+    border-radius:12px;
+    cursor:pointer;
+    background:#000;
 }
 
-.timeline {
-    display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(170px,1fr));
-    gap: 15px;
+.descripcion{
+    font-size:18px;
+    line-height:1.6;
 }
 
-.year {
-    background: #252525;
-    border: 1px solid #555;
-    border-radius: 15px;
-    padding: 25px;
-    text-align: center;
-    cursor: pointer;
-    transition: .2s;
+.objeto{
+    background:#292929;
+    padding:20px;
+    border-left:5px solid #d00000;
+    margin-top:20px;
 }
 
-.year:hover {
-    transform: translateY(-5px);
-    background: #333;
+.audioguia{
+    margin-top:20px;
+    padding:15px;
+    background:#222;
+    border-radius:10px;
 }
 
-.year strong {
-    font-size: 30px;
+.audioguia button{
+    background:#d00000;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
 }
 
-.sala {
-    background: #1c1c1c;
-    border: 1px solid #444;
-    border-radius: 20px;
-    padding: 30px;
-    margin-bottom: 40px;
+.pregunta{
+    margin-top:25px;
+    padding:20px;
+    background:#3a2020;
+    border-radius:10px;
+    font-size:20px;
 }
 
-.sala h3 {
-    font-size: 30px;
+.timeline{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:10px;
+    margin:30px auto;
+    max-width:900px;
 }
 
-.sala p {
-    line-height: 1.7;
-    color: #ddd;
+.timeline button{
+    background:#333;
+    color:white;
+    border:2px solid #b00000;
+    padding:12px 18px;
+    border-radius:20px;
+    cursor:pointer;
 }
 
-/* IMÁGENES */
-
-.imagen {
-    width: 100%;
-    max-height: 700px;
-    object-fit: contain;
-    background: #050505;
-    border-radius: 15px;
-    display: block;
-    margin: 25px auto;
-    cursor: zoom-in;
+.timeline button:hover{
+    background:#b00000;
 }
 
-.caption {
-    color: #aaa;
-    text-align: center;
-    font-size: 14px;
+#modal{
+    display:none;
+    position:fixed;
+    z-index:100;
+    left:0;
+    top:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,.95);
+    align-items:center;
+    justify-content:center;
 }
 
-.info-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
-    gap: 20px;
-    margin-top: 25px;
+#modal img{
+    max-width:95%;
+    max-height:90%;
+    object-fit:contain;
 }
 
-.card {
-    background: #292929;
-    padding: 25px;
-    border-radius: 15px;
+#cerrar{
+    position:absolute;
+    top:20px;
+    right:30px;
+    font-size:40px;
+    cursor:pointer;
 }
 
-.card h4 {
-    margin-top: 0;
-    font-size: 21px;
+.final{
+    text-align:center;
+    padding:80px 20px;
+    background:linear-gradient(135deg,#260000,#111);
 }
 
-/* AUDIO */
-
-.audioguia {
-    background: #292929;
-    border-left: 5px solid white;
-    padding: 25px;
-    border-radius: 15px;
-    margin-top: 25px;
+.final h2{
+    font-size:40px;
+    color:#ff4444;
 }
 
-.audioguia button {
-    border: none;
-    padding: 12px 18px;
-    margin: 5px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: bold;
+.integrantes{
+    font-size:22px;
+    line-height:2;
+    margin-top:30px;
 }
 
-.play {
-    background: white;
-    color: black;
+footer{
+    text-align:center;
+    padding:20px;
+    background:#080808;
+    color:#aaa;
 }
-
-.pause {
-    background: #777;
-    color: white;
-}
-
-.stop {
-    background: #b3261e;
-    color: white;
-}
-
-.estado {
-    color: #bbb;
-}
-
-/* PREGUNTA */
-
-.pregunta {
-    margin-top: 25px;
-    padding: 25px;
-    border-radius: 15px;
-    background: #080808;
-    border: 1px solid #555;
-    font-size: 19px;
-}
-
-/* MODALES */
-
-.modal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 100;
-    background: rgba(0,0,0,.95);
-    overflow-y: auto;
-    padding: 30px;
-}
-
-.modal-contenido {
-    max-width: 1000px;
-    margin: 30px auto;
-    background: #1c1c1c;
-    border-radius: 20px;
-    padding: 30px;
-    position: relative;
-}
-
-.cerrar {
-    position: absolute;
-    right: 20px;
-    top: 10px;
-    font-size: 40px;
-    cursor: pointer;
-}
-
-.modal img {
-    width: 100%;
-    max-height: 75vh;
-    object-fit: contain;
-}
-
-footer {
-    text-align: center;
-    padding: 60px 20px;
-    background: #050505;
-    color: #aaa;
-}
-
-@media(max-width:600px) {
-
-    header {
-        padding: 70px 15px;
-    }
-
-    section {
-        padding: 45px 15px;
-    }
-
-    .sala {
-        padding: 20px;
-    }
-
-}
-
 </style>
 </head>
 
 <body>
 
 <header>
-
-<h1>La Revolución China</h1>
-
-<p>
-Museo Virtual — 1911-1976
-</p>
-
-<p>
-Revolución, propaganda, poder y vida cotidiana
-</p>
-
+    <h1>🏛️ Museo Virtual de la Revolución China</h1>
+    <p>Historia, revolución, propaganda y poder</p>
 </header>
 
-
 <nav>
-
-<a href="#inicio">Inicio</a>
-<a href="#timeline">Línea de tiempo</a>
-<a href="#salas">Salas</a>
-
+    <button onclick="irSala(1)">Sala 1</button>
+    <button onclick="irSala(2)">Sala 2</button>
+    <button onclick="irSala(3)">Sala 3</button>
+    <button onclick="irSala(4)">Sala 4</button>
+    <button onclick="irSala(5)">Sala 5</button>
+    <button onclick="irSala(6)">Final</button>
 </nav>
 
-
-<section id="inicio">
-
-<h2>🏛️ Bienvenidos al museo</h2>
-
-<p class="intro">
-
-Este museo virtual presenta distintos momentos de la historia
-de la Revolución China y analiza especialmente la relación entre
-propaganda, poder y vida cotidiana.
-
-A través de fotografías, carteles, objetos simbólicos y
-audioguías, el visitante puede conocer diferentes aspectos
-del proceso histórico.
-
-</p>
-
+<section class="timeline">
+    <button onclick="mostrarFecha('1911')">1911</button>
+    <button onclick="mostrarFecha('1921')">1921</button>
+    <button onclick="mostrarFecha('1927')">1927</button>
+    <button onclick="mostrarFecha('1934')">1934</button>
+    <button onclick="mostrarFecha('1949')">1949</button>
+    <button onclick="mostrarFecha('1966')">1966</button>
+    <button onclick="mostrarFecha('1976')">1976</button>
 </section>
 
-
-<section id="timeline">
-
-<h2>📅 Línea de tiempo</h2>
-
-<p class="intro">
-
-Hacé clic en cada año para conocer qué ocurrió.
-
-</p>
-
-<div class="timeline">
-
-<div class="year" onclick="evento('1911')">
-<strong>1911</strong>
-<p>Fin del Imperio</p>
-</div>
-
-<div class="year" onclick="evento('1921')">
-<strong>1921</strong>
-<p>Partido Comunista</p>
-</div>
-
-<div class="year" onclick="evento('1927')">
-<strong>1927</strong>
-<p>Guerra Civil</p>
-</div>
-
-<div class="year" onclick="evento('1934')">
-<strong>1934</strong>
-<p>Larga Marcha</p>
-</div>
-
-<div class="year" onclick="evento('1949')">
-<strong>1949</strong>
-<p>República Popular</p>
-</div>
-
-<div class="year" onclick="evento('1966')">
-<strong>1966</strong>
-<p>Revolución Cultural</p>
-</div>
-
-<div class="year" onclick="evento('1976')">
-<strong>1976</strong>
-<p>Muerte de Mao</p>
-</div>
-
-</div>
-
-</section>
-
-
-<section id="salas">
-
-<h2>🏛️ Salas del museo</h2>
-
+<div id="fechaTexto" style="text-align:center;font-size:20px;margin:20px;"></div>
 
 <!-- SALA 1 -->
 
-<div class="sala">
+<section class="sala" id="sala1">
 
-<h3>Sala 1 — La caída del Imperio</h3>
+<h2>🏯 Sala 1 — La caída del Imperio</h2>
 
-<img
-class="imagen"
-src="https://commons.wikimedia.org/wiki/Special:FilePath/Tiananmen%201949.jpg"
-alt="Tiananmen en 1949"
-onclick="imagenGrande(this.src)"
->
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Puyi_in_1922.jpg/1280px-Puyi_in_1922.jpg"
+onclick="abrirImagen(this.src)">
 
-<p class="caption">
-Tiananmen, 1949.
-</p>
-
+<div class="descripcion">
 <p>
-La Revolución de Xinhai de 1911 terminó con la dinastía Qing
-y puso fin al sistema imperial chino. En los años siguientes
-China atravesó una etapa de conflictos políticos y militares.
+En 1911 comenzó la Revolución Xinhai, que terminó con el sistema imperial chino.
+En 1912 se estableció la República de China y el último emperador, Puyi,
+dejó el poder.
 </p>
+</div>
 
-<div class="card">
-
-<h4>🏺 Objeto simbólico</h4>
-
-<p>
-Una bandera de la República de China representa el cambio
-político producido después de la caída del Imperio.
-</p>
-
+<div class="objeto">
+<b>Objeto simbólico:</b> Fotografía del emperador Puyi.
+<br>
+Representa el final del sistema imperial y el comienzo de una nueva etapa política.
 </div>
 
 <div class="audioguia">
-
-<h3>🎧 Audioguía</h3>
-
-<button class="play" onclick="audio(1)">▶️ Escuchar</button>
-<button class="pause" onclick="pausar()">⏸️ Pausar</button>
-<button class="stop" onclick="detener()">⏹️ Detener</button>
-
-<p class="estado" id="estado1">Audio detenido</p>
-
+<button onclick="hablar('Bienvenidos a la primera sala. Aquí vemos el final del Imperio chino y el comienzo de la República. La caída del emperador significó un cambio importante en la organización política de China.')">
+🎧 Escuchar audioguía
+</button>
 </div>
 
 <div class="pregunta">
-
-<strong>💭 Para pensar:</strong><br><br>
-
-¿Qué cambios puede producir la caída de un sistema político?
-
+💭 ¿Qué cambios puede producir la caída de un sistema político?
 </div>
 
-</div>
+</section>
 
 
 <!-- SALA 2 -->
 
-<div class="sala">
+<section class="sala" id="sala2">
 
-<h3>Sala 2 — La Guerra Civil China</h3>
+<h2>⚔️ Sala 2 — La Guerra Civil China</h2>
 
-<img
-class="imagen"
-src="https://commons.wikimedia.org/wiki/Special:FilePath/PLA%20Enters%20Peking.jpg"
-alt="Ejército Popular de Liberación entrando en Pekín"
-onclick="imagenGrande(this.src)"
->
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Chinese_Civil_War.jpg/1280px-Chinese_Civil_War.jpg"
+onclick="abrirImagen(this.src)">
 
-<p class="caption">
-Entrada del Ejército Popular de Liberación en Pekín, 31 de enero de 1949.
-</p>
-
+<div class="descripcion">
 <p>
-La guerra civil enfrentó principalmente al Partido Comunista
-de China y al Kuomintang. Después de diferentes etapas de
-conflicto, las fuerzas comunistas obtuvieron el control de
-gran parte de China continental en 1949.
+Durante gran parte del siglo XX, los comunistas y los nacionalistas
+se enfrentaron por el control de China. El conflicto fue interrumpido
+por la guerra contra Japón y posteriormente continuó.
 </p>
-
-<div class="info-grid">
-
-<div class="card">
-
-<h4>⚔️ Conflicto</h4>
-
-<p>
-El enfrentamiento tuvo diferentes etapas y estuvo relacionado
-con las disputas por el control político de China.
-</p>
-
 </div>
 
-<div class="card">
-
-<h4>👥 La población</h4>
-
-<p>
-La población civil experimentó los efectos de los conflictos,
-desplazamientos y cambios políticos.
-</p>
-
-</div>
-
-</div>
-
-<div class="card">
-
-<h4>🎖️ Objeto simbólico</h4>
-
-<p>
-Un uniforme militar representa la importancia que tuvieron
-los ejércitos durante el conflicto.
-</p>
-
+<div class="objeto">
+<b>Objeto simbólico:</b> Uniforme militar.
+<br>
+Representa a los grupos armados que participaron en el conflicto.
 </div>
 
 <div class="audioguia">
-
-<h3>🎧 Audioguía</h3>
-
-<button class="play" onclick="audio(2)">▶️ Escuchar</button>
-<button class="pause" onclick="pausar()">⏸️ Pausar</button>
-<button class="stop" onclick="detener()">⏹️ Detener</button>
-
-<p class="estado" id="estado2">Audio detenido</p>
-
+<button onclick="hablar('En esta sala observamos la Guerra Civil China. Comunistas y nacionalistas se enfrentaron durante años por el control del país. La guerra transformó profundamente la sociedad y la política china.')">
+🎧 Escuchar audioguía
+</button>
 </div>
 
 <div class="pregunta">
-
-<strong>💭 Para pensar:</strong><br><br>
-
-¿Cómo cambia la vida cotidiana de una población durante una guerra?
-
+💭 ¿Cómo puede una guerra transformar la vida cotidiana de una población?
 </div>
 
-</div>
+</section>
 
 
 <!-- SALA 3 -->
 
-<div class="sala">
+<section class="sala" id="sala3">
 
-<h3>Sala 3 — 1949: nacimiento de la República Popular China</h3>
+<h2>🚩 Sala 3 — 1949: nacimiento de la República Popular China</h2>
 
-<img
-class="imagen"
-src="https://commons.wikimedia.org/wiki/Special:FilePath/Mao%20Zedong%20in%201949.png"
-alt="Mao Zedong en Tiananmen en 1949"
-onclick="imagenGrande(this.src)"
->
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Mao_Zedong_in_1949.jpg/1280px-Mao_Zedong_in_1949.jpg"
+onclick="abrirImagen(this.src)">
 
-<p class="caption">
-Mao Zedong en la ceremonia de proclamación de la República Popular China,
-1 de octubre de 1949.
-</p>
-
+<div class="descripcion">
 <p>
-El 1 de octubre de 1949 Mao Zedong proclamó la República Popular
-China desde Tiananmen, en Pekín. El nuevo gobierno comunista
-pasó a controlar China continental.
+En 1949, las fuerzas comunistas dirigidas por Mao Zedong obtuvieron
+la victoria en la Guerra Civil y se proclamó la República Popular China.
+El nuevo gobierno comenzó a reorganizar el Estado y la sociedad.
 </p>
+</div>
 
-<div class="card">
-
-<h4>📜 Objeto simbólico</h4>
-
-<p>
-Una fotografía de la proclamación representa el comienzo de una
-nueva etapa política en China.
-</p>
-
+<div class="objeto">
+<b>Objeto simbólico:</b> Bandera de la República Popular China.
+<br>
+Representa el nuevo Estado establecido en 1949.
 </div>
 
 <div class="audioguia">
-
-<h3>🎧 Audioguía</h3>
-
-<button class="play" onclick="audio(3)">▶️ Escuchar</button>
-<button class="pause" onclick="pausar()">⏸️ Pausar</button>
-<button class="stop" onclick="detener()">⏹️ Detener</button>
-
-<p class="estado" id="estado3">Audio detenido</p>
-
+<button onclick="hablar('Llegamos a 1949, un año fundamental. Mao Zedong proclamó la República Popular China después de la victoria comunista en la Guerra Civil. Se inició una nueva etapa política para el país.')">
+🎧 Escuchar audioguía
+</button>
 </div>
 
 <div class="pregunta">
-
-<strong>💭 Para pensar:</strong><br><br>
-
-¿Por qué una ceremonia política puede convertirse en un símbolo histórico?
-
+💭 ¿Por qué la creación de un nuevo Estado cambia la vida de sus habitantes?
 </div>
 
-</div>
+</section>
 
 
 <!-- SALA 4 -->
 
-<div class="sala">
+<section class="sala" id="sala4">
 
-<h3>Sala 4 — Mao y la construcción de su imagen</h3>
+<h2>📢 Sala 4 — Mao y la construcción de su imagen</h2>
 
-<img
-class="imagen"
-src="https://commons.wikimedia.org/wiki/Special:FilePath/Mao%20Zedong%20Portrait%20at%20Tiananmen.jpg"
-alt="Retrato de Mao en Tiananmen"
-onclick="imagenGrande(this.src)"
->
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Mao_Zedong_Portrait.jpg/1280px-Mao_Zedong_Portrait.jpg"
+onclick="abrirImagen(this.src)">
 
-<p class="caption">
-Retrato de Mao Zedong en Tiananmen.
-</p>
-
+<div class="descripcion">
 <p>
-Durante las décadas posteriores a 1949 se difundieron diferentes
-representaciones de Mao. Su imagen apareció en fotografías,
-carteles, libros y espacios públicos.
+La propaganda tuvo un papel importante en la construcción de la imagen
+pública de Mao Zedong. Fotografías, carteles, discursos y símbolos
+presentaban al líder como una figura central de la revolución.
 </p>
-
-<div class="info-grid">
-
-<div class="card">
-
-<h4>👤 La figura de Mao</h4>
-
-<p>
-Mao fue presentado en numerosos materiales como una figura
-central del proceso revolucionario.
-</p>
-
 </div>
 
-<div class="card">
-
-<h4>📢 Propaganda</h4>
-
-<p>
-Las imágenes podían utilizar símbolos, colores, posiciones
-y multitudes para transmitir determinados mensajes.
-</p>
-
-</div>
-
-<div class="card">
-
-<h4>🔎 Análisis</h4>
-
-<p>
-Una imagen propagandística no muestra necesariamente todos
-los aspectos de una sociedad. Por eso es importante analizar
-qué muestra y qué deja afuera.
-</p>
-
-</div>
-
-</div>
-
-<div class="card">
-
-<h4>🖼️ Objeto simbólico</h4>
-
-<p>
-Un retrato de Mao representa la importancia que tuvo su imagen
-en la comunicación política de la época.
-</p>
-
+<div class="objeto">
+<b>Objeto simbólico:</b> Retrato de Mao.
+<br>
+Representa la presencia de la imagen del líder en espacios públicos
+y materiales de propaganda.
 </div>
 
 <div class="audioguia">
-
-<h3>🎧 Audioguía</h3>
-
-<button class="play" onclick="audio(4)">▶️ Escuchar</button>
-<button class="pause" onclick="pausar()">⏸️ Pausar</button>
-<button class="stop" onclick="detener()">⏹️ Detener</button>
-
-<p class="estado" id="estado4">Audio detenido</p>
-
+<button onclick="hablar('En esta sala analizamos cómo se construyó la imagen pública de Mao. La propaganda utilizaba retratos, carteles, colores, símbolos y mensajes repetidos para presentar una determinada imagen del líder y de la revolución.')">
+🎧 Escuchar audioguía
+</button>
 </div>
 
 <div class="pregunta">
-
-<strong>💭 Para pensar:</strong><br><br>
-
-¿Cómo puede una imagen ayudar a construir la representación
-de un líder político?
-
+💭 ¿La propaganda mostraba solamente la realidad o también construía una imagen de cómo debía ser la sociedad?
 </div>
 
-</div>
+</section>
 
 
 <!-- SALA 5 -->
 
-<div class="sala">
+<section class="sala" id="sala5">
 
-<h3>Sala 5 — La Revolución Cultural y la propaganda</h3>
+<h2>📕 Sala 5 — La Revolución Cultural y la propaganda</h2>
 
-<img
-class="imagen"
-src="https://cdn.loc.gov/service/pnp/cph/3g00000/3g03000/3g03300/3g03377_150px.jpg"
-alt="Cartel de propaganda de la Revolución Cultural"
-onclick="imagenGrande(this.src)"
->
+<!-- IMAGEN DE MAYOR CALIDAD -->
+<img src="https://www.loc.gov/pictures/resource/cph.3g03377/"
+onclick="abrirImagen(this.src)">
 
-<p class="caption">
-Cartel de propaganda de la Revolución Cultural, 1967.
-Library of Congress.
-</p>
-
+<div class="descripcion">
 <p>
-La Revolución Cultural comenzó en 1966 y produjo importantes
-transformaciones políticas y sociales. Durante este período
-se difundieron numerosos carteles y publicaciones relacionados
-con Mao y con los objetivos del movimiento.
+Durante la Revolución Cultural, iniciada en 1966, la propaganda política
+ocupó un lugar central. Los carteles presentaban a Mao y a la revolución
+mediante colores, símbolos, multitudes y mensajes dirigidos a la población.
 </p>
-
-<div class="info-grid">
-
-<div class="card">
-
-<h4>📕 El Libro Rojo</h4>
-
-<p>
-Las citas de Mao fueron recopiladas y difundidas ampliamente
-en el llamado Libro Rojo.
-</p>
-
 </div>
 
-<div class="card">
-
-<h4>👦 Los jóvenes</h4>
-
-<p>
-Los Guardias Rojos tuvieron un papel destacado durante la
-Revolución Cultural.
-</p>
-
-</div>
-
-<div class="card">
-
-<h4>📢 Propaganda</h4>
-
-<p>
-Los carteles utilizaban imágenes y consignas para transmitir
-mensajes políticos y representar determinados valores.
-</p>
-
-</div>
-
-</div>
-
-<div class="card">
-
-<h4>📕 Objeto simbólico</h4>
-
-<p>
-El Libro Rojo de Mao representa la difusión de textos y citas
-políticas durante la Revolución Cultural.
-</p>
-
+<div class="objeto">
+<b>Objeto simbólico:</b> El Libro Rojo de Mao.
+<br>
+Representa uno de los materiales más conocidos de la propaganda política
+de aquella época.
 </div>
 
 <div class="audioguia">
-
-<h3>🎧 Audioguía</h3>
-
-<button class="play" onclick="audio(5)">▶️ Escuchar</button>
-<button class="pause" onclick="pausar()">⏸️ Pausar</button>
-<button class="stop" onclick="detener()">⏹️ Detener</button>
-
-<p class="estado" id="estado5">Audio detenido</p>
-
+<button onclick="hablar('Esta sala está dedicada a la Revolución Cultural y a la propaganda. Los carteles utilizaban imágenes de Mao, multitudes, símbolos y mensajes políticos. La propaganda buscaba transmitir determinados valores y orientar la forma en que las personas debían interpretar la revolución y la sociedad.')">
+🎧 Escuchar audioguía
+</button>
 </div>
 
 <div class="pregunta">
-
-<strong>💭 Pregunta final:</strong><br><br>
-
-¿La propaganda mostraba la realidad o construía una imagen
-de cómo debía ser la sociedad?
-
+💭 ¿Qué aspectos de la vida cotidiana puede mostrar la propaganda y cuáles puede dejar afuera?
 </div>
+
+</section>
+
+
+<!-- SALA 6 FINAL -->
+
+<section class="final" id="sala6">
+
+<h2>🎉 ¡Gracias por visitar nuestro museo!</h2>
+
+<p style="font-size:22px;">
+Esperamos que este recorrido te haya ayudado a conocer
+y reflexionar sobre la Revolución China, la propaganda,
+el poder y la vida cotidiana.
+</p>
+
+<p style="font-size:24px;margin-top:40px;">
+🏛️ <b>FIN DEL RECORRIDO</b> 🏛️
+</p>
+
+<div class="integrantes">
+
+<h3>👥 Los que hicieron este museo</h3>
+
+<p>
+<b>SEBAS ALARCON</b><br>
+<b>DYLAN GUAN</b><br>
+<b>LEANDRO MOJICA</b><br>
+<b>VICTORIA GIRI</b><br>
+<b>MARTINA GUERRERO</b>
+</p>
 
 </div>
 
@@ -756,278 +430,85 @@ de cómo debía ser la sociedad?
 
 
 <footer>
-
-<h2>🏛️ Museo Virtual de la Revolución China</h2>
-
-<p>
-Proyecto educativo de Historia
-</p>
-
+Museo Virtual de la Revolución China — 2026
 </footer>
 
 
-<!-- MODAL IMAGEN -->
+<!-- MODAL PARA IMÁGENES -->
 
-<div class="modal" id="modalImagen">
+<div id="modal" onclick="cerrarImagen()">
 
-<div class="modal-contenido">
+<span id="cerrar">✕</span>
 
-<span class="cerrar" onclick="cerrarImagen()">×</span>
-
-<img id="imagenModal">
-
-</div>
-
-</div>
-
-
-<!-- MODAL AÑO -->
-
-<div class="modal" id="modalEvento">
-
-<div class="modal-contenido">
-
-<span class="cerrar" onclick="cerrarEvento()">×</span>
-
-<h2 id="tituloEvento"></h2>
-
-<p id="textoEvento" class="intro"></p>
-
-</div>
+<img id="imagenGrande">
 
 </div>
 
 
 <script>
 
-/* =========================
-   AUDIOGUÍAS
-========================= */
-
-const textos = {
-
-1: `Bienvenidos a la primera sala del Museo Virtual de la Revolución China.
-En esta sala observamos el final del sistema imperial chino.
-La Revolución de Xinhai de 1911 terminó con la dinastía Qing.
-A partir de ese momento comenzó una nueva etapa política.
-Sin embargo, China continuó atravesando conflictos y cambios.
-Este proceso ayuda a comprender el contexto en el que posteriormente
-aparecieron diferentes movimientos políticos.
-La pregunta para el visitante es:
-¿Qué cambios puede producir la caída de un sistema político?`,
-
-2: `Bienvenidos a la segunda sala.
-Aquí conocemos la Guerra Civil China.
-El conflicto enfrentó principalmente al Partido Comunista de China
-y al Kuomintang.
-La guerra tuvo diferentes etapas y afectó a la población civil.
-En 1949 las fuerzas comunistas obtuvieron el control de gran parte
-de China continental.
-La guerra produjo cambios políticos y sociales muy importantes.
-La pregunta para el visitante es:
-¿Cómo cambia la vida cotidiana de una población durante una guerra?`,
-
-3: `Bienvenidos a la tercera sala.
-El 1 de octubre de 1949 Mao Zedong proclamó la República Popular China
-desde Tiananmen, en Pekín.
-Este acontecimiento marcó el comienzo de una nueva etapa política.
-La ceremonia fue acompañada por una gran movilización pública y
-posteriormente se convirtió en una imagen muy importante de la
-memoria política del nuevo Estado.
-La pregunta es:
-¿Por qué una ceremonia política puede convertirse en un símbolo histórico?`,
-
-4: `Bienvenidos a la cuarta sala.
-Aquí analizamos cómo se construyó la imagen de Mao como líder.
-Su rostro apareció en fotografías, carteles, libros y diferentes
-espacios públicos.
-La propaganda utilizaba imágenes, colores, símbolos y posiciones
-para transmitir determinados mensajes.
-Por eso es importante observar no solamente qué muestra una imagen,
-sino también qué aspectos quedan afuera.
-La pregunta para el visitante es:
-¿Cómo puede una imagen ayudar a construir la representación
-de un líder político?`,
-
-5: `Bienvenidos a la quinta sala.
-La Revolución Cultural comenzó en 1966 y produjo importantes
-transformaciones políticas y sociales.
-Durante este período se difundieron numerosos carteles y
-publicaciones relacionados con Mao y con los objetivos del movimiento.
-Los jóvenes, especialmente los Guardias Rojos, tuvieron un papel
-destacado.
-La propaganda estuvo relacionada con la política y también con
-diferentes aspectos de la vida cotidiana.
-La pregunta final del museo es:
-¿La propaganda mostraba la realidad o construía una imagen
-de cómo debía ser la sociedad?`
-
-};
-
-let vozActual = null;
-
-
-function audio(numero) {
-
-speechSynthesis.cancel();
-
-vozActual = new SpeechSynthesisUtterance(textos[numero]);
-
-vozActual.lang = "es-AR";
-vozActual.rate = 0.9;
-vozActual.pitch = 1;
-vozActual.volume = 1;
-
-const voces = speechSynthesis.getVoices();
-
-const espanol =
-voces.find(v => v.lang === "es-AR") ||
-voces.find(v => v.lang.startsWith("es"));
-
-if(espanol) {
-    vozActual.voice = espanol;
+function abrirImagen(src){
+    document.getElementById("imagenGrande").src = src;
+    document.getElementById("modal").style.display = "flex";
 }
 
-document.getElementById("estado" + numero).innerText =
-"🔊 Reproduciendo audioguía...";
-
-vozActual.onend = function() {
-
-document.getElementById("estado" + numero).innerText =
-"✅ Audioguía terminada";
-
-};
-
-speechSynthesis.speak(vozActual);
-
+function cerrarImagen(){
+    document.getElementById("modal").style.display = "none";
 }
 
-
-function pausar() {
-
-if(speechSynthesis.speaking) {
-
-speechSynthesis.pause();
-
+function irSala(numero){
+    document.getElementById("sala"+numero).scrollIntoView({
+        behavior:"smooth"
+    });
 }
 
+function hablar(texto){
+
+    window.speechSynthesis.cancel();
+
+    let mensaje = new SpeechSynthesisUtterance(texto);
+
+    mensaje.lang = "es-ES";
+    mensaje.rate = 0.9;
+    mensaje.pitch = 1;
+
+    window.speechSynthesis.speak(mensaje);
 }
 
+function mostrarFecha(fecha){
 
-function detener() {
+    let texto = "";
 
-speechSynthesis.cancel();
+    if(fecha=="1911"){
+        texto="1911: Revolución Xinhai y caída del sistema imperial.";
+    }
 
-document.querySelectorAll(".estado").forEach(e => {
+    if(fecha=="1921"){
+        texto="1921: Fundación del Partido Comunista Chino.";
+    }
 
-e.innerText = "⏹️ Audio detenido";
+    if(fecha=="1927"){
+        texto="1927: Comienzo de una nueva etapa de la Guerra Civil China.";
+    }
 
-});
+    if(fecha=="1934"){
+        texto="1934: Comienza la Larga Marcha del Ejército Rojo.";
+    }
 
+    if(fecha=="1949"){
+        texto="1949: Proclamación de la República Popular China.";
+    }
+
+    if(fecha=="1966"){
+        texto="1966: Comienza la Revolución Cultural.";
+    }
+
+    if(fecha=="1976"){
+        texto="1976: Muere Mao Zedong y termina la Revolución Cultural.";
+    }
+
+    document.getElementById("fechaTexto").innerHTML = texto;
 }
-
-
-/* =========================
-   IMÁGENES
-========================= */
-
-function imagenGrande(src) {
-
-document.getElementById("imagenModal").src = src;
-
-document.getElementById("modalImagen").style.display = "block";
-
-}
-
-
-function cerrarImagen() {
-
-document.getElementById("modalImagen").style.display = "none";
-
-}
-
-
-/* =========================
-   LÍNEA DE TIEMPO
-========================= */
-
-const eventos = {
-
-1911: [
-"1911 — Fin del Imperio",
-"La Revolución de Xinhai terminó con la dinastía Qing y puso fin al sistema imperial chino."
-],
-
-1921: [
-"1921 — Fundación del Partido Comunista",
-"En 1921 fue fundado el Partido Comunista de China, que posteriormente se convirtió en uno de los principales actores políticos del país."
-],
-
-1927: [
-"1927 — Guerra Civil",
-"Las tensiones entre el Partido Comunista y el Kuomintang desembocaron en una guerra civil que atravesó diferentes etapas."
-],
-
-1934: [
-"1934 — Larga Marcha",
-"Las fuerzas comunistas realizaron la Larga Marcha, una retirada de miles de kilómetros que contribuyó a consolidar el liderazgo de Mao."
-],
-
-1949: [
-"1949 — República Popular China",
-"El 1 de octubre de 1949 Mao Zedong proclamó la República Popular China desde Tiananmen, en Pekín."
-],
-
-1966: [
-"1966 — Revolución Cultural",
-"Comenzó la Revolución Cultural, un período de grandes transformaciones políticas y sociales que se extendió hasta 1976."
-],
-
-1976: [
-"1976 — Muerte de Mao",
-"Mao Zedong murió el 9 de septiembre de 1976. Ese mismo año terminó la Revolución Cultural."
-]
-
-};
-
-
-function evento(anio) {
-
-document.getElementById("tituloEvento").innerText =
-eventos[anio][0];
-
-document.getElementById("textoEvento").innerText =
-eventos[anio][1];
-
-document.getElementById("modalEvento").style.display = "block";
-
-}
-
-
-function cerrarEvento() {
-
-document.getElementById("modalEvento").style.display = "none";
-
-}
-
-
-/* CERRAR MODALES */
-
-window.onclick = function(e) {
-
-if(e.target === document.getElementById("modalImagen")) {
-
-cerrarImagen();
-
-}
-
-if(e.target === document.getElementById("modalEvento")) {
-
-cerrarEvento();
-
-}
-
-};
 
 </script>
 
