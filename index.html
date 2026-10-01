@@ -2,1370 +2,1304 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Museo Virtual | Revolución China 1949</title>
-
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #111;
-            color: #eee;
-            line-height: 1.6;
-        }
-
-        /* =========================
-           PORTADA
-        ========================= */
-
-        .hero {
-            min-height: 100vh;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-
-            background-color: #151515;
-
-            background-image:
-                linear-gradient(
-                    rgba(0, 0, 0, 0.72),
-                    rgba(0, 0, 0, 0.82)
-                ),
-                url("https://commons.wikimedia.org/wiki/Special:FilePath/Mao%20Zedong%20in%201949.png");
-
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-
-        .hero::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background:
-                radial-gradient(
-                    circle at center,
-                    rgba(160, 20, 20, 0.15),
-                    transparent 55%
-                );
-            pointer-events: none;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            width: min(900px, 90%);
-            padding: 40px 20px;
-        }
-
-        .hero small {
-            display: block;
-            color: #d7b56d;
-            font-size: 1rem;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            margin-bottom: 20px;
-        }
-
-        .hero h1 {
-            font-size: clamp(2.5rem, 7vw, 5.5rem);
-            line-height: 1.05;
-            margin-bottom: 25px;
-            color: white;
-            text-shadow: 0 4px 20px black;
-        }
-
-        .hero h1 span {
-            color: #d7b56d;
-        }
-
-        .hero p {
-            font-size: clamp(1rem, 2vw, 1.3rem);
-            max-width: 700px;
-            margin: 0 auto 30px;
-            color: #ddd;
-        }
-
-        .hero-button {
-            display: inline-block;
-            padding: 14px 28px;
-            border: 2px solid #d7b56d;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 30px;
-            transition: 0.3s;
-            background: rgba(0, 0, 0, 0.35);
-        }
-
-        .hero-button:hover {
-            background: #d7b56d;
-            color: #111;
-            transform: translateY(-3px);
-        }
-
-        /* =========================
-           NAVEGACIÓN
-        ========================= */
-
-        nav {
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            background: rgba(10, 10, 10, 0.96);
-            border-bottom: 1px solid #444;
-            backdrop-filter: blur(10px);
-        }
-
-        .nav-container {
-            width: min(1200px, 94%);
-            margin: auto;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-            padding: 12px 0;
-        }
-
-        nav a {
-            color: #ddd;
-            text-decoration: none;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            transition: 0.25s;
-        }
-
-        nav a:hover {
-            background: #d7b56d;
-            color: #111;
-        }
-
-        /* =========================
-           GENERAL
-        ========================= */
-
-        main {
-            width: 100%;
-        }
-
-        .section {
-            width: min(1150px, 92%);
-            margin: auto;
-            padding: 90px 0;
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        .section-title span {
-            color: #d7b56d;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            font-size: 0.85rem;
-        }
-
-        .section-title h2 {
-            font-size: clamp(2rem, 5vw, 3rem);
-            margin-top: 8px;
-        }
-
-        .section-title p {
-            max-width: 750px;
-            margin: 15px auto 0;
-            color: #bbb;
-        }
-
-        /* =========================
-           INTRODUCCIÓN
-        ========================= */
-
-        .intro {
-            background: #181818;
-        }
-
-        .intro-box {
-            max-width: 850px;
-            margin: auto;
-            background: #222;
-            border-left: 4px solid #d7b56d;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(0,0,0,.25);
-        }
-
-        .intro-box p + p {
-            margin-top: 18px;
-        }
-
-        /* =========================
-           LÍNEA DE TIEMPO
-        ========================= */
-
-        .timeline {
-            position: relative;
-            max-width: 900px;
-            margin: auto;
-        }
-
-        .timeline::before {
-            content: "";
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 3px;
-            height: 100%;
-            background: #d7b56d;
-        }
-
-        .timeline-item {
-            position: relative;
-            width: 50%;
-            padding: 20px 40px;
-        }
-
-        .timeline-item:nth-child(odd) {
-            left: 0;
-            text-align: right;
-        }
-
-        .timeline-item:nth-child(even) {
-            left: 50%;
-        }
-
-        .timeline-dot {
-            position: absolute;
-            top: 30px;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: #d7b56d;
-            border: 4px solid #111;
-        }
-
-        .timeline-item:nth-child(odd) .timeline-dot {
-            right: -9px;
-        }
-
-        .timeline-item:nth-child(even) .timeline-dot {
-            left: -9px;
-        }
-
-        .timeline-card {
-            background: #222;
-            padding: 20px;
-            border-radius: 10px;
-            border: 1px solid #333;
-        }
-
-        .timeline-card button {
-            margin-top: 12px;
-            border: none;
-            background: #d7b56d;
-            color: #111;
-            padding: 8px 14px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .timeline-card button:hover {
-            opacity: 0.85;
-        }
-
-        .date {
-            color: #d7b56d;
-            font-size: 1.3rem;
-            font-weight: bold;
-        }
-
-        /* =========================
-           SALAS
-        ========================= */
-
-        .rooms {
-            background: #151515;
-        }
-
-        .room {
-            background: #202020;
-            margin-bottom: 50px;
-            border-radius: 14px;
-            overflow: hidden;
-            border: 1px solid #333;
-            box-shadow: 0 15px 35px rgba(0,0,0,.25);
-        }
-
-        .room-header {
-            padding: 25px 30px;
-            background: #252525;
-            border-bottom: 1px solid #333;
-        }
-
-        .room-header span {
-            color: #d7b56d;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .room-header h3 {
-            font-size: 1.8rem;
-            margin-top: 5px;
-        }
-
-        .room-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            padding: 30px;
-        }
-
-        .room-image {
-            width: 100%;
-            height: 330px;
-            object-fit: cover;
-            border-radius: 10px;
-            background: #333;
-            border: 1px solid #444;
-        }
-
-        .room-text h4 {
-            color: #d7b56d;
-            margin-bottom: 10px;
-            font-size: 1.2rem;
-        }
-
-        .room-text p {
-            color: #ccc;
-            margin-bottom: 18px;
-        }
-
-        .room-text ul {
-            padding-left: 20px;
-            color: #ccc;
-        }
-
-        .room-text li {
-            margin-bottom: 8px;
-        }
-
-        /* =========================
-           AUDIO
-        ========================= */
-
-        .audio-button {
-            display: inline-block;
-            border: 1px solid #d7b56d;
-            background: transparent;
-            color: #d7b56d;
-            padding: 10px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: 0.25s;
-        }
-
-        .audio-button:hover {
-            background: #d7b56d;
-            color: #111;
-        }
-
-        /* =========================
-           CAJA DE REFLEXIÓN
-        ========================= */
-
-        .reflection {
-            margin-top: 25px;
-            padding: 20px;
-            background: #171717;
-            border-left: 3px solid #d7b56d;
-            border-radius: 5px;
-        }
-
-        .reflection strong {
-            color: #d7b56d;
-        }
-
-        /* =========================
-           IMAGEN FALLIDA
-        ========================= */
-
-        .image-error {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: #aaa;
-            min-height: 330px;
-            padding: 25px;
-            background:
-                linear-gradient(
-                    135deg,
-                    #292929,
-                    #171717
-                );
-        }
-
-        /* =========================
-           PIE
-        ========================= */
-
-        footer {
-            background: #0b0b0b;
-            border-top: 1px solid #333;
-            padding: 50px 20px;
-            text-align: center;
-        }
-
-        footer h3 {
-            color: #d7b56d;
-            margin-bottom: 15px;
-        }
-
-        footer p {
-            color: #aaa;
-            margin: 5px;
-        }
-
-        .credits {
-            margin-top: 25px;
-            color: #666;
-            font-size: 0.85rem;
-        }
-
-        /* =========================
-           RESPONSIVE
-        ========================= */
-
-        @media (max-width: 800px) {
-
-            .timeline::before {
-                left: 10px;
-            }
-
-            .timeline-item,
-            .timeline-item:nth-child(even),
-            .timeline-item:nth-child(odd) {
-                width: 100%;
-                left: 0;
-                text-align: left;
-                padding-left: 40px;
-                padding-right: 0;
-            }
-
-            .timeline-item:nth-child(odd) .timeline-dot,
-            .timeline-item:nth-child(even) .timeline-dot {
-                left: 1px;
-                right: auto;
-            }
-
-            .room-content {
-                grid-template-columns: 1fr;
-            }
-
-            .room-image {
-                height: 280px;
-            }
-
-            .nav-container {
-                gap: 3px;
-            }
-
-            nav a {
-                font-size: 0.8rem;
-                padding: 7px 8px;
-            }
-        }
-
-        @media (max-width: 500px) {
-
-            .section {
-                width: 90%;
-                padding: 65px 0;
-            }
-
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            .hero small {
-                letter-spacing: 2px;
-            }
-
-            .room-content {
-                padding: 20px;
-            }
-
-            .room-header {
-                padding: 20px;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Museo Virtual | Revolución China 1949</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#111;
+    color:#eee;
+    line-height:1.6;
+}
+
+/* =========================
+   PORTADA
+========================= */
+
+.hero{
+    min-height:100vh;
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    position:relative;
+
+    background-color:#151515;
+
+    background-image:
+        linear-gradient(
+            rgba(0,0,0,.70),
+            rgba(0,0,0,.82)
+        ),
+        url("https://upload.wikimedia.org/wikipedia/commons/3/35/Mao_Zedong_in_1949.png");
+
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+}
+
+.hero-content{
+    position:relative;
+    z-index:2;
+    width:min(900px,92%);
+    padding:40px 20px;
+}
+
+.hero small{
+    display:block;
+    color:#d7b56d;
+    letter-spacing:4px;
+    text-transform:uppercase;
+    margin-bottom:20px;
+}
+
+.hero h1{
+    font-size:clamp(2.8rem,7vw,6rem);
+    line-height:1.05;
+    color:white;
+    text-shadow:0 4px 20px #000;
+}
+
+.hero h1 span{
+    color:#d7b56d;
+}
+
+.hero p{
+    max-width:750px;
+    margin:25px auto;
+    font-size:1.2rem;
+    color:#ddd;
+}
+
+.hero-button{
+    display:inline-block;
+    padding:14px 28px;
+    border:2px solid #d7b56d;
+    border-radius:30px;
+    color:white;
+    text-decoration:none;
+    transition:.3s;
+}
+
+.hero-button:hover{
+    background:#d7b56d;
+    color:#111;
+}
+
+
+/* =========================
+   MENU
+========================= */
+
+nav{
+    position:sticky;
+    top:0;
+    z-index:1000;
+    background:rgba(10,10,10,.97);
+    border-bottom:1px solid #444;
+}
+
+.nav-container{
+    width:min(1200px,94%);
+    margin:auto;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:5px;
+    padding:12px;
+}
+
+nav a{
+    color:#ddd;
+    text-decoration:none;
+    padding:8px 12px;
+    border-radius:6px;
+    font-size:.9rem;
+    transition:.25s;
+}
+
+nav a:hover{
+    background:#d7b56d;
+    color:#111;
+}
+
+
+/* =========================
+   SECCIONES
+========================= */
+
+.section{
+    width:min(1150px,92%);
+    margin:auto;
+    padding:90px 0;
+}
+
+.section-title{
+    text-align:center;
+    margin-bottom:50px;
+}
+
+.section-title span{
+    color:#d7b56d;
+    text-transform:uppercase;
+    letter-spacing:3px;
+    font-size:.85rem;
+}
+
+.section-title h2{
+    font-size:clamp(2rem,5vw,3rem);
+    margin-top:8px;
+}
+
+.section-title p{
+    max-width:750px;
+    margin:15px auto;
+    color:#bbb;
+}
+
+
+/* =========================
+   INTRODUCCIÓN
+========================= */
+
+.intro{
+    background:#181818;
+}
+
+.intro-box{
+    max-width:850px;
+    margin:auto;
+    padding:30px;
+    background:#222;
+    border-left:4px solid #d7b56d;
+    border-radius:8px;
+}
+
+.intro-box p+p{
+    margin-top:18px;
+}
+
+
+/* =========================
+   CRONOLOGÍA
+========================= */
+
+.timeline{
+    position:relative;
+    max-width:900px;
+    margin:auto;
+}
+
+.timeline::before{
+    content:"";
+    position:absolute;
+    left:50%;
+    transform:translateX(-50%);
+    width:3px;
+    height:100%;
+    background:#d7b56d;
+}
+
+.timeline-item{
+    position:relative;
+    width:50%;
+    padding:20px 40px;
+}
+
+.timeline-item:nth-child(odd){
+    left:0;
+    text-align:right;
+}
+
+.timeline-item:nth-child(even){
+    left:50%;
+}
+
+.timeline-dot{
+    position:absolute;
+    top:30px;
+    width:18px;
+    height:18px;
+    border-radius:50%;
+    background:#d7b56d;
+    border:4px solid #111;
+}
+
+.timeline-item:nth-child(odd) .timeline-dot{
+    right:-9px;
+}
+
+.timeline-item:nth-child(even) .timeline-dot{
+    left:-9px;
+}
+
+.timeline-card{
+    background:#222;
+    padding:20px;
+    border-radius:10px;
+    border:1px solid #333;
+}
+
+.timeline-card button{
+    margin-top:12px;
+    padding:8px 14px;
+    border:none;
+    background:#d7b56d;
+    color:#111;
+    border-radius:5px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.date{
+    color:#d7b56d;
+    font-size:1.3rem;
+    font-weight:bold;
+}
+
+
+/* =========================
+   SALAS
+========================= */
+
+.rooms{
+    background:#151515;
+}
+
+.room{
+    background:#202020;
+    margin-bottom:50px;
+    border-radius:14px;
+    overflow:hidden;
+    border:1px solid #333;
+    box-shadow:0 15px 35px rgba(0,0,0,.25);
+}
+
+.room-header{
+    padding:25px 30px;
+    background:#252525;
+    border-bottom:1px solid #333;
+}
+
+.room-header span{
+    color:#d7b56d;
+    font-size:.8rem;
+    text-transform:uppercase;
+    letter-spacing:2px;
+}
+
+.room-header h3{
+    font-size:1.8rem;
+    margin-top:5px;
+}
+
+.room-content{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:30px;
+    padding:30px;
+}
+
+
+/* =========================
+   IMÁGENES
+========================= */
+
+.room-image{
+    width:100%;
+    height:350px;
+    object-fit:cover;
+    display:block;
+    border-radius:10px;
+    background:#333;
+    border:1px solid #444;
+}
+
+.room-image:hover{
+    transform:scale(1.01);
+    transition:.3s;
+}
+
+
+/* =========================
+   TEXTO
+========================= */
+
+.room-text h4{
+    color:#d7b56d;
+    margin-bottom:10px;
+    font-size:1.2rem;
+}
+
+.room-text p{
+    color:#ccc;
+    margin-bottom:18px;
+}
+
+.room-text ul{
+    padding-left:20px;
+    color:#ccc;
+}
+
+.room-text li{
+    margin-bottom:8px;
+}
+
+
+/* =========================
+   AUDIO
+========================= */
+
+.audio-button{
+    display:inline-block;
+    border:1px solid #d7b56d;
+    background:transparent;
+    color:#d7b56d;
+    padding:10px 16px;
+    border-radius:6px;
+    cursor:pointer;
+    margin-top:10px;
+}
+
+.audio-button:hover{
+    background:#d7b56d;
+    color:#111;
+}
+
+
+/* =========================
+   REFLEXIÓN
+========================= */
+
+.reflection{
+    margin-top:25px;
+    padding:20px;
+    background:#171717;
+    border-left:3px solid #d7b56d;
+    border-radius:5px;
+}
+
+.reflection strong{
+    color:#d7b56d;
+}
+
+
+/* =========================
+   FALLBACK DE IMAGEN
+========================= */
+
+.image-fallback{
+    width:100%;
+    height:350px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    background:
+        linear-gradient(
+            135deg,
+            #292929,
+            #111
+        );
+    color:#aaa;
+    border-radius:10px;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+footer{
+    background:#0b0b0b;
+    border-top:1px solid #333;
+    padding:50px 20px;
+    text-align:center;
+}
+
+footer h3{
+    color:#d7b56d;
+    margin-bottom:15px;
+}
+
+footer p{
+    color:#aaa;
+    margin:5px;
+}
+
+.credits{
+    margin-top:25px;
+    color:#666;
+}
+
+
+/* =========================
+   CELULAR
+========================= */
+
+@media(max-width:800px){
+
+    .timeline::before{
+        left:10px;
+    }
+
+    .timeline-item,
+    .timeline-item:nth-child(odd),
+    .timeline-item:nth-child(even){
+        width:100%;
+        left:0;
+        text-align:left;
+        padding-left:40px;
+        padding-right:0;
+    }
+
+    .timeline-item:nth-child(odd) .timeline-dot,
+    .timeline-item:nth-child(even) .timeline-dot{
+        left:1px;
+        right:auto;
+    }
+
+    .room-content{
+        grid-template-columns:1fr;
+    }
+
+    .room-image,
+    .image-fallback{
+        height:280px;
+    }
+
+    nav a{
+        font-size:.8rem;
+        padding:7px 8px;
+    }
+}
+
+</style>
 </head>
+
 
 <body>
 
-    <!-- =========================
-         PORTADA
-    ========================= -->
 
-    <header class="hero">
+<!-- =========================
+     PORTADA
+========================= -->
 
-        <div class="hero-content">
+<header class="hero">
 
-            <small>Museo Virtual de Historia</small>
+    <div class="hero-content">
 
-            <h1>
-                La Revolución<br>
-                <span>China</span>
-            </h1>
+        <small>Museo Virtual de Historia</small>
 
-            <p>
-                1949 · Del final de la guerra civil a la creación
-                de la República Popular China
-            </p>
-
-            <a class="hero-button" href="#introduccion">
-                Entrar al museo ↓
-            </a>
-
-        </div>
-
-    </header>
-
-
-    <!-- =========================
-         NAVEGACIÓN
-    ========================= -->
-
-    <nav>
-
-        <div class="nav-container">
-
-            <a href="#introduccion">Introducción</a>
-
-            <a href="#cronologia">Cronología</a>
-
-            <a href="#sala1">Sala 1</a>
-
-            <a href="#sala2">Sala 2</a>
-
-            <a href="#sala3">Sala 3</a>
-
-            <a href="#sala4">Sala 4</a>
-
-            <a href="#sala5">Sala 5</a>
-
-            <a href="#conclusion">Conclusión</a>
-
-        </div>
-
-    </nav>
-
-
-    <main>
-
-        <!-- =========================
-             INTRODUCCIÓN
-        ========================= -->
-
-        <section class="section intro" id="introduccion">
-
-            <div class="section-title">
-
-                <span>Bienvenidos</span>
-
-                <h2>Introducción</h2>
-
-                <p>
-                    Un recorrido por los principales acontecimientos
-                    que transformaron la historia de China.
-                </p>
-
-            </div>
-
-
-            <div class="intro-box">
-
-                <p>
-                    La Revolución China de 1949 fue el resultado de un
-                    largo proceso de conflictos políticos, sociales y
-                    militares. El enfrentamiento entre nacionalistas y
-                    comunistas terminó con la victoria de las fuerzas
-                    comunistas dirigidas por Mao Zedong.
-                </p>
-
-                <p>
-                    El 1 de octubre de 1949 Mao Zedong proclamó en
-                    Beijing la creación de la República Popular China.
-                    El gobierno nacionalista de Chiang Kai-shek se
-                    retiró hacia Taiwán.
-                </p>
-
-                <p>
-                    Este museo virtual presenta algunos de los
-                    acontecimientos más importantes del proceso,
-                    utilizando imágenes, textos, una línea de tiempo
-                    y recursos interactivos.
-                </p>
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================
-             CRONOLOGÍA
-        ========================= -->
-
-        <section class="section" id="cronologia">
-
-            <div class="section-title">
-
-                <span>Recorrido histórico</span>
-
-                <h2>Línea de tiempo</h2>
-
-                <p>
-                    Estos acontecimientos permiten comprender el
-                    contexto que llevó a 1949.
-                </p>
-
-            </div>
-
-
-            <div class="timeline">
-
-
-                <div class="timeline-item">
-
-                    <div class="timeline-dot"></div>
-
-                    <div class="timeline-card">
-
-                        <div class="date">1911</div>
-
-                        <h3>Revolución Xinhai</h3>
-
-                        <p>
-                            Cae la dinastía Qing y termina el sistema
-                            imperial chino.
-                        </p>
-
-                        <button onclick="mostrarFecha('1911')">
-                            Ver información
-                        </button>
-
-                    </div>
-
-                </div>
-
-
-                <div class="timeline-item">
-
-                    <div class="timeline-dot"></div>
-
-                    <div class="timeline-card">
-
-                        <div class="date">1921</div>
-
-                        <h3>Fundación del Partido Comunista</h3>
-
-                        <p>
-                            Se funda el Partido Comunista de China.
-                        </p>
-
-                        <button onclick="mostrarFecha('1921')">
-                            Ver información
-                        </button>
-
-                    </div>
-
-                </div>
-
-
-                <div class="timeline-item">
-
-                    <div class="timeline-dot"></div>
-
-                    <div class="timeline-card">
-
-                        <div class="date">1937</div>
-
-                        <h3>Guerra contra Japón</h3>
-
-                        <p>
-                            La invasión japonesa modifica el escenario
-                            político y militar chino.
-                        </p>
-
-                        <button onclick="mostrarFecha('1937')">
-                            Ver información
-                        </button>
-
-                    </div>
-
-                </div>
-
-
-                <div class="timeline-item">
-
-                    <div class="timeline-dot"></div>
-
-                    <div class="timeline-card">
-
-                        <div class="date">1949</div>
-
-                        <h3>Creación de la República Popular</h3>
-
-                        <p>
-                            Mao Zedong proclama la República Popular China.
-                        </p>
-
-                        <button onclick="mostrarFecha('1949')">
-                            Ver información
-                        </button>
-
-                    </div>
-
-                </div>
-
-
-                <div class="timeline-item">
-
-                    <div class="timeline-dot"></div>
-
-                    <div class="timeline-card">
-
-                        <div class="date">1966</div>
-
-                        <h3>Revolución Cultural</h3>
-
-                        <p>
-                            Comienza un nuevo proceso político y social
-                            impulsado por Mao.
-                        </p>
-
-                        <button onclick="mostrarFecha('1966')">
-                            Ver información
-                        </button>
-
-                    </div>
-
-                </div>
-
-
-                <div class="timeline-item">
-
-                    <div class="timeline-dot"></div>
-
-                    <div class="timeline-card">
-
-                        <div class="date">1976</div>
-
-                        <h3>Muere Mao Zedong</h3>
-
-                        <p>
-                            La muerte de Mao marca el final de una etapa.
-                        </p>
-
-                        <button onclick="mostrarFecha('1976')">
-                            Ver información
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================
-             SALAS
-        ========================= -->
-
-        <section class="section rooms">
-
-            <div class="section-title">
-
-                <span>Exposición permanente</span>
-
-                <h2>Las salas del museo</h2>
-
-                <p>
-                    Cada sala aborda un aspecto diferente del proceso
-                    histórico.
-                </p>
-
-            </div>
-
-
-            <!-- SALA 1 -->
-
-            <article class="room" id="sala1">
-
-                <div class="room-header">
-
-                    <span>Sala 01</span>
-
-                    <h3>El final del Imperio</h3>
-
-                </div>
-
-
-                <div class="room-content">
-
-                    <div>
-
-                        <img
-                            class="room-image"
-                            src="https://commons.wikimedia.org/wiki/Special:FilePath/Puyi%20%281922%29.jpg"
-                            alt="Puyi en 1922"
-                            onerror="imagenError(this)"
-                        >
-
-                    </div>
-
-
-                    <div class="room-text">
-
-                        <h4>La caída de la dinastía Qing</h4>
-
-                        <p>
-                            Durante comienzos del siglo XX China atravesó
-                            una profunda crisis política. La Revolución
-                            Xinhai de 1911 terminó con la dinastía Qing
-                            y puso fin a siglos de gobierno imperial.
-                        </p>
-
-                        <p>
-                            El último emperador fue Puyi, quien había
-                            llegado al trono siendo un niño.
-                        </p>
-
-                        <button
-                            class="audio-button"
-                            onclick="hablar('La Revolución Xinhai de 1911 terminó con la dinastía Qing y puso fin al sistema imperial chino.')"
-                        >
-                            🔊 Escuchar
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </article>
-
-
-            <!-- SALA 2 -->
-
-            <article class="room" id="sala2">
-
-                <div class="room-header">
-
-                    <span>Sala 02</span>
-
-                    <h3>La guerra civil</h3>
-
-                </div>
-
-
-                <div class="room-content">
-
-                    <div>
-
-                        <img
-                            class="room-image"
-                            src="https://commons.wikimedia.org/wiki/Special:FilePath/PLA%20Enters%20Peking.jpg"
-                            alt="Entrada del Ejército Popular de Liberación en Pekín"
-                            onerror="imagenError(this)"
-                        >
-
-                    </div>
-
-
-                    <div class="room-text">
-
-                        <h4>Nacionalistas y comunistas</h4>
-
-                        <p>
-                            Durante décadas existió una fuerte
-                            confrontación entre el Partido Nacionalista
-                            (Kuomintang) y el Partido Comunista de China.
-                        </p>
-
-                        <p>
-                            Después de la Segunda Guerra Mundial el
-                            enfrentamiento se intensificó nuevamente.
-                        </p>
-
-                        <ul>
-
-                            <li>
-                                Los nacionalistas estaban dirigidos
-                                por Chiang Kai-shek.
-                            </li>
-
-                            <li>
-                                Los comunistas estaban dirigidos
-                                por Mao Zedong.
-                            </li>
-
-                            <li>
-                                El conflicto terminó favoreciendo
-                                a las fuerzas comunistas.
-                            </li>
-
-                        </ul>
-
-                        <button
-                            class="audio-button"
-                            onclick="hablar('La guerra civil enfrentó principalmente al Partido Nacionalista y al Partido Comunista de China.')"
-                        >
-                            🔊 Escuchar
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </article>
-
-
-            <!-- SALA 3 -->
-
-            <article class="room" id="sala3">
-
-                <div class="room-header">
-
-                    <span>Sala 03</span>
-
-                    <h3>Mao Zedong y 1949</h3>
-
-                </div>
-
-
-                <div class="room-content">
-
-                    <div>
-
-                        <img
-                            class="room-image"
-                            src="https://commons.wikimedia.org/wiki/Special:FilePath/Mao%20Zedong%20in%201949.png"
-                            alt="Mao Zedong en 1949"
-                            onerror="imagenError(this)"
-                        >
-
-                    </div>
-
-
-                    <div class="room-text">
-
-                        <h4>La proclamación de la República Popular</h4>
-
-                        <p>
-                            El 1 de octubre de 1949 Mao Zedong proclamó
-                            en la plaza de Tiananmen la creación de la
-                            República Popular China.
-                        </p>
-
-                        <p>
-                            Este acontecimiento marcó un cambio
-                            fundamental en la organización política
-                            de China y tuvo consecuencias internacionales
-                            durante la Guerra Fría.
-                        </p>
-
-                        <div class="reflection">
-
-                            <strong>Dato histórico:</strong>
-
-                            <p>
-                                La proclamación ocurrió el
-                                1 de octubre de 1949 en Beijing.
-                            </p>
-
-                        </div>
-
-                        <button
-                            class="audio-button"
-                            onclick="hablar('El primero de octubre de 1949 Mao Zedong proclamó la República Popular China en la plaza de Tiananmen.')"
-                        >
-                            🔊 Escuchar
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </article>
-
-
-            <!-- SALA 4 -->
-
-            <article class="room" id="sala4">
-
-                <div class="room-header">
-
-                    <span>Sala 04</span>
-
-                    <h3>El nuevo Estado</h3>
-
-                </div>
-
-
-                <div class="room-content">
-
-                    <div>
-
-                        <img
-                            class="room-image"
-                            src="https://commons.wikimedia.org/wiki/Special:FilePath/Mao%20Zedong%20in%201949.png"
-                            alt="Mao Zedong durante la proclamación de 1949"
-                            onerror="imagenError(this)"
-                        >
-
-                    </div>
-
-
-                    <div class="room-text">
-
-                        <h4>Transformaciones políticas y económicas</h4>
-
-                        <p>
-                            Después de 1949 comenzó la construcción de
-                            un nuevo Estado dirigido por el Partido
-                            Comunista de China.
-                        </p>
-
-                        <p>
-                            Se produjeron transformaciones en la
-                            economía, la propiedad de la tierra,
-                            la educación y la organización política.
-                        </p>
-
-                        <ul>
-
-                            <li>
-                                Reforma agraria.
-                            </li>
-
-                            <li>
-                                Mayor control estatal de la economía.
-                            </li>
-
-                            <li>
-                                Organización política bajo el Partido
-                                Comunista.
-                            </li>
-
-                            <li>
-                                Nuevas relaciones internacionales.
-                            </li>
-
-                        </ul>
-
-                    </div>
-
-                </div>
-
-            </article>
-
-
-            <!-- SALA 5 -->
-
-            <article class="room" id="sala5">
-
-                <div class="room-header">
-
-                    <span>Sala 05</span>
-
-                    <h3>Propaganda y sociedad</h3>
-
-                </div>
-
-
-                <div class="room-content">
-
-                    <div>
-
-                        <img
-                            class="room-image"
-                            src="https://www.loc.gov/pictures/resource/cph.3g03376/"
-                            alt="Material histórico relacionado con China"
-                            onerror="imagenError(this)"
-                        >
-
-                    </div>
-
-
-                    <div class="room-text">
-
-                        <h4>La construcción de mensajes políticos</h4>
-
-                        <p>
-                            La propaganda fue utilizada para transmitir
-                            mensajes políticos, sociales y culturales.
-                        </p>
-
-                        <p>
-                            Carteles, periódicos, fotografías y otros
-                            medios ayudaron a difundir determinadas
-                            representaciones de la sociedad y del
-                            nuevo Estado.
-                        </p>
-
-                        <div class="reflection">
-
-                            <strong>Para analizar:</strong>
-
-                            <p>
-                                Al observar una imagen propagandística
-                                es importante preguntarse quién la creó,
-                                para quién estaba dirigida y qué mensaje
-                                intentaba transmitir.
-                            </p>
-
-                        </div>
-
-                        <button
-                            class="audio-button"
-                            onclick="hablar('La propaganda utilizó imágenes y mensajes para transmitir ideas políticas y sociales a la población.')"
-                        >
-                            🔊 Escuchar
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </article>
-
-
-            <!-- SALA FINAL -->
-
-            <article class="room" id="conclusion">
-
-                <div class="room-header">
-
-                    <span>Sala final</span>
-
-                    <h3>Consecuencias históricas</h3>
-
-                </div>
-
-
-                <div class="room-content">
-
-                    <div class="room-text">
-
-                        <h4>Un cambio que transformó China</h4>
-
-                        <p>
-                            La Revolución China de 1949 modificó
-                            profundamente la organización política,
-                            económica y social del país.
-                        </p>
-
-                        <p>
-                            La creación de la República Popular China
-                            también tuvo importancia internacional,
-                            especialmente dentro del contexto de la
-                            Guerra Fría.
-                        </p>
-
-                        <div class="reflection">
-
-                            <strong>Reflexión final:</strong>
-
-                            <p>
-                                Comprender la Revolución China permite
-                                analizar cómo los conflictos internos,
-                                las transformaciones sociales y las
-                                relaciones internacionales pueden
-                                cambiar la historia de un país.
-                            </p>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="room-text">
-
-                        <h4>Fin del recorrido</h4>
-
-                        <p>
-                            Gracias por visitar nuestro museo virtual.
-                        </p>
-
-                        <button
-                            class="audio-button"
-                            onclick="hablar('Gracias por visitar nuestro museo virtual sobre la Revolución China de 1949.')"
-                        >
-                            🔊 Escuchar despedida
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </article>
-
-        </section>
-
-    </main>
-
-
-    <!-- =========================
-         FOOTER
-    ========================= -->
-
-    <footer>
-
-        <h3>Museo Virtual — Revolución China</h3>
+        <h1>
+            La Revolución
+            <br>
+            <span>China</span>
+        </h1>
 
         <p>
-            Proyecto escolar de Historia
+            1949 · Del final de la guerra civil
+            a la creación de la República Popular China
         </p>
 
-        <p>
-            Revolución China · 1949
-        </p>
+        <a href="#introduccion" class="hero-button">
+            Entrar al museo ↓
+        </a>
 
-        <div class="credits">
-            Proyecto realizado por Sebastián y su grupo.
-        </div>
+    </div>
 
-    </footer>
+</header>
 
 
-    <!-- =========================
-         JAVASCRIPT
-    ========================= -->
+<!-- =========================
+     NAVEGACIÓN
+========================= -->
 
-    <script>
+<nav>
 
-        /* =========================
-           INFORMACIÓN DE LA LÍNEA
-           DE TIEMPO
-        ========================= */
+<div class="nav-container">
 
-        function mostrarFecha(fecha) {
+<a href="#introduccion">Introducción</a>
+<a href="#cronologia">Cronología</a>
+<a href="#sala1">Sala 1</a>
+<a href="#sala2">Sala 2</a>
+<a href="#sala3">Sala 3</a>
+<a href="#sala4">Sala 4</a>
+<a href="#sala5">Sala 5</a>
+<a href="#conclusion">Conclusión</a>
 
-            const informacion = {
+</div>
 
-                "1911":
-                    "En 1911 comenzó la Revolución Xinhai, que terminó con la dinastía Qing y el sistema imperial.",
-
-                "1921":
-                    "En 1921 fue fundado el Partido Comunista de China.",
-
-                "1937":
-                    "En 1937 comenzó la guerra a gran escala contra Japón después de la expansión japonesa en China.",
-
-                "1949":
-                    "El 1 de octubre de 1949 Mao Zedong proclamó la República Popular China.",
-
-                "1966":
-                    "En 1966 comenzó la Revolución Cultural, un importante proceso político y social.",
-
-                "1976":
-                    "En 1976 murió Mao Zedong y terminó una etapa importante de la historia de la República Popular China."
-
-            };
-
-            alert(informacion[fecha] || "No hay información disponible.");
-
-        }
+</nav>
 
 
-        /* =========================
-           LECTOR DE AUDIO
-        ========================= */
-
-        function hablar(texto) {
-
-            if (!("speechSynthesis" in window)) {
-
-                alert(
-                    "Tu navegador no permite reproducir la narración automática."
-                );
-
-                return;
-            }
-
-            window.speechSynthesis.cancel();
-
-            const voz = new SpeechSynthesisUtterance(texto);
-
-            voz.lang = "es-ES";
-
-            voz.rate = 0.95;
-
-            voz.pitch = 1;
-
-            window.speechSynthesis.speak(voz);
-
-        }
+<main>
 
 
-        /* =========================
-           ERROR DE IMÁGENES
-        ========================= */
+<!-- =========================
+     INTRODUCCIÓN
+========================= -->
 
-        function imagenError(imagen) {
+<section class="section intro" id="introduccion">
 
-            const contenedor = document.createElement("div");
+<div class="section-title">
 
-            contenedor.className = "room-image image-error";
+<span>Bienvenidos</span>
 
-            contenedor.innerHTML =
-                "<div>" +
-                "<strong>Imagen histórica</strong><br>" +
-                "<span>La imagen no pudo cargarse.</span>" +
-                "</div>";
+<h2>Introducción</h2>
 
-            imagen.replaceWith(contenedor);
+<p>
+Un recorrido por los principales acontecimientos
+que transformaron la historia de China.
+</p>
 
-        }
+</div>
 
 
-        /* =========================
-           DETENER AUDIO AL SALIR
-        ========================= */
+<div class="intro-box">
 
-        window.addEventListener("beforeunload", function () {
+<p>
+La Revolución China de 1949 fue el resultado de un
+largo proceso de conflictos políticos, sociales y
+militares.
+</p>
 
-            if ("speechSynthesis" in window) {
+<p>
+El enfrentamiento entre nacionalistas y comunistas
+terminó con la victoria de las fuerzas comunistas
+dirigidas por Mao Zedong.
+</p>
 
-                window.speechSynthesis.cancel();
+<p>
+El 1 de octubre de 1949 Mao Zedong proclamó en Beijing
+la creación de la República Popular China.
+</p>
 
-            }
+</div>
 
-        });
+</section>
 
-    </script>
+
+<!-- =========================
+     CRONOLOGÍA
+========================= -->
+
+<section class="section" id="cronologia">
+
+<div class="section-title">
+
+<span>Recorrido histórico</span>
+
+<h2>Línea de tiempo</h2>
+
+<p>
+Los acontecimientos principales que ayudan
+a comprender el proceso histórico.
+</p>
+
+</div>
+
+
+<div class="timeline">
+
+
+<div class="timeline-item">
+
+<div class="timeline-dot"></div>
+
+<div class="timeline-card">
+
+<div class="date">1911</div>
+
+<h3>Revolución Xinhai</h3>
+
+<p>
+Cae la dinastía Qing y termina el sistema imperial.
+</p>
+
+<button onclick="mostrarFecha('1911')">
+Ver información
+</button>
+
+</div>
+
+</div>
+
+
+<div class="timeline-item">
+
+<div class="timeline-dot"></div>
+
+<div class="timeline-card">
+
+<div class="date">1921</div>
+
+<h3>Partido Comunista</h3>
+
+<p>
+Se funda el Partido Comunista de China.
+</p>
+
+<button onclick="mostrarFecha('1921')">
+Ver información
+</button>
+
+</div>
+
+</div>
+
+
+<div class="timeline-item">
+
+<div class="timeline-dot"></div>
+
+<div class="timeline-card">
+
+<div class="date">1937</div>
+
+<h3>Guerra contra Japón</h3>
+
+<p>
+La invasión japonesa cambia el escenario
+político y militar chino.
+</p>
+
+<button onclick="mostrarFecha('1937')">
+Ver información
+</button>
+
+</div>
+
+</div>
+
+
+<div class="timeline-item">
+
+<div class="timeline-dot"></div>
+
+<div class="timeline-card">
+
+<div class="date">1949</div>
+
+<h3>República Popular China</h3>
+
+<p>
+Mao Zedong proclama la República Popular China.
+</p>
+
+<button onclick="mostrarFecha('1949')">
+Ver información
+</button>
+
+</div>
+
+</div>
+
+
+<div class="timeline-item">
+
+<div class="timeline-dot"></div>
+
+<div class="timeline-card">
+
+<div class="date">1966</div>
+
+<h3>Revolución Cultural</h3>
+
+<p>
+Comienza un nuevo proceso político y social.
+</p>
+
+<button onclick="mostrarFecha('1966')">
+Ver información
+</button>
+
+</div>
+
+</div>
+
+
+<div class="timeline-item">
+
+<div class="timeline-dot"></div>
+
+<div class="timeline-card">
+
+<div class="date">1976</div>
+
+<h3>Muerte de Mao</h3>
+
+<p>
+La muerte de Mao marca el final de una etapa.
+</p>
+
+<button onclick="mostrarFecha('1976')">
+Ver información
+</button>
+
+</div>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     SALAS
+========================= -->
+
+<section class="section rooms">
+
+<div class="section-title">
+
+<span>Exposición permanente</span>
+
+<h2>Las salas del museo</h2>
+
+<p>
+Cada sala presenta un aspecto diferente
+del proceso histórico.
+</p>
+
+</div>
+
+
+<!-- SALA 1 -->
+
+<article class="room" id="sala1">
+
+<div class="room-header">
+
+<span>Sala 01</span>
+
+<h3>El final del Imperio</h3>
+
+</div>
+
+
+<div class="room-content">
+
+<div>
+
+<img
+class="room-image"
+src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Puyi_%281922%29.jpg"
+alt="Puyi en 1922"
+onerror="imagenError(this)"
+>
+
+</div>
+
+
+<div class="room-text">
+
+<h4>La caída de la dinastía Qing</h4>
+
+<p>
+Durante comienzos del siglo XX China atravesó
+una profunda crisis política.
+</p>
+
+<p>
+La Revolución Xinhai de 1911 terminó con la
+dinastía Qing y puso fin al sistema imperial.
+</p>
+
+<p>
+El último emperador fue Puyi.
+</p>
+
+<button
+class="audio-button"
+onclick="hablar('La Revolución Xinhai de 1911 terminó con la dinastía Qing y puso fin al sistema imperial chino.')"
+>
+🔊 Escuchar
+</button>
+
+</div>
+
+</div>
+
+</article>
+
+
+<!-- SALA 2 -->
+
+<article class="room" id="sala2">
+
+<div class="room-header">
+
+<span>Sala 02</span>
+
+<h3>La guerra civil</h3>
+
+</div>
+
+
+<div class="room-content">
+
+<div>
+
+<img
+class="room-image"
+src="https://upload.wikimedia.org/wikipedia/commons/9/9b/PLA_Enters_Peking.jpg"
+alt="Entrada del Ejército Popular de Liberación en Pekín"
+onerror="imagenError(this)"
+>
+
+</div>
+
+
+<div class="room-text">
+
+<h4>Nacionalistas y comunistas</h4>
+
+<p>
+La guerra civil china enfrentó principalmente
+al Partido Nacionalista y al Partido Comunista.
+</p>
+
+<ul>
+
+<li>
+Chiang Kai-shek dirigía el Kuomintang.
+</li>
+
+<li>
+Mao Zedong dirigía el Partido Comunista.
+</li>
+
+<li>
+El conflicto terminó en 1949.
+</li>
+
+</ul>
+
+<button
+class="audio-button"
+onclick="hablar('La guerra civil enfrentó principalmente al Partido Nacionalista y al Partido Comunista de China.')"
+>
+🔊 Escuchar
+</button>
+
+</div>
+
+</div>
+
+</article>
+
+
+<!-- SALA 3 -->
+
+<article class="room" id="sala3">
+
+<div class="room-header">
+
+<span>Sala 03</span>
+
+<h3>Mao Zedong y 1949</h3>
+
+</div>
+
+
+<div class="room-content">
+
+<div>
+
+<img
+class="room-image"
+src="https://upload.wikimedia.org/wikipedia/commons/8/85/Mao_Proclaiming_New_China.JPG"
+alt="Mao Zedong proclamando la República Popular China"
+onerror="imagenError(this)"
+>
+
+</div>
+
+
+<div class="room-text">
+
+<h4>La proclamación de la República Popular</h4>
+
+<p>
+El 1 de octubre de 1949 Mao Zedong proclamó
+en Beijing la creación de la República Popular China.
+</p>
+
+<p>
+El acontecimiento tuvo una gran importancia
+para la historia política de China.
+</p>
+
+<div class="reflection">
+
+<strong>Dato histórico:</strong>
+
+<p>
+La proclamación ocurrió el 1 de octubre de 1949.
+</p>
+
+</div>
+
+<button
+class="audio-button"
+onclick="hablar('El primero de octubre de 1949 Mao Zedong proclamó la República Popular China.')"
+>
+🔊 Escuchar
+</button>
+
+</div>
+
+</div>
+
+</article>
+
+
+<!-- SALA 4 -->
+
+<article class="room" id="sala4">
+
+<div class="room-header">
+
+<span>Sala 04</span>
+
+<h3>El nuevo Estado</h3>
+
+</div>
+
+
+<div class="room-content">
+
+<div>
+
+<img
+class="room-image"
+src="https://upload.wikimedia.org/wikipedia/commons/3/35/Mao_Zedong_in_1949.png"
+alt="Mao Zedong en 1949"
+onerror="imagenError(this)"
+>
+
+</div>
+
+
+<div class="room-text">
+
+<h4>Transformaciones políticas y económicas</h4>
+
+<p>
+Después de 1949 comenzó la construcción
+de un nuevo Estado dirigido por el Partido
+Comunista de China.
+</p>
+
+<ul>
+
+<li>Reforma agraria.</li>
+
+<li>Transformaciones económicas.</li>
+
+<li>Nueva organización política.</li>
+
+<li>Cambios sociales.</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</article>
+
+
+<!-- SALA 5 -->
+
+<article class="room" id="sala5">
+
+<div class="room-header">
+
+<span>Sala 05</span>
+
+<h3>Propaganda y sociedad</h3>
+
+</div>
+
+
+<div class="room-content">
+
+<div>
+
+<img
+class="room-image"
+src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/China_propaganda_poster.jpg/960px-China_propaganda_poster.jpg"
+alt="Cartel de propaganda en China"
+onerror="imagenError(this)"
+>
+
+</div>
+
+
+<div class="room-text">
+
+<h4>La construcción de mensajes políticos</h4>
+
+<p>
+La propaganda utilizó imágenes, carteles,
+periódicos y otros medios para transmitir
+mensajes políticos y sociales.
+</p>
+
+<p>
+Al analizar una imagen es importante observar
+quién la creó, a quién estaba dirigida y
+qué mensaje intentaba transmitir.
+</p>
+
+<div class="reflection">
+
+<strong>Para analizar:</strong>
+
+<p>
+¿Qué elementos visuales utiliza?
+¿Qué mensaje transmite?
+¿A quién parece estar dirigido?
+</p>
+
+</div>
+
+<button
+class="audio-button"
+onclick="hablar('La propaganda utilizó imágenes y mensajes para transmitir ideas políticas y sociales a la población.')"
+>
+🔊 Escuchar
+</button>
+
+</div>
+
+</div>
+
+</article>
+
+
+<!-- SALA FINAL -->
+
+<article class="room" id="conclusion">
+
+<div class="room-header">
+
+<span>Sala final</span>
+
+<h3>Consecuencias históricas</h3>
+
+</div>
+
+
+<div class="room-content">
+
+<div class="room-text">
+
+<h4>Un cambio histórico</h4>
+
+<p>
+La Revolución China de 1949 transformó
+profundamente la organización política,
+económica y social de China.
+</p>
+
+<p>
+La creación de la República Popular China
+también tuvo importancia internacional
+durante la Guerra Fría.
+</p>
+
+<div class="reflection">
+
+<strong>Reflexión final:</strong>
+
+<p>
+Comprender este proceso permite analizar
+cómo los conflictos políticos, sociales
+y militares pueden transformar la historia
+de un país.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="room-text">
+
+<h4>Fin del recorrido</h4>
+
+<p>
+Gracias por visitar nuestro museo virtual
+sobre la Revolución China de 1949.
+</p>
+
+<button
+class="audio-button"
+onclick="hablar('Gracias por visitar nuestro museo virtual sobre la Revolución China de mil novecientos cuarenta y nueve.')"
+>
+🔊 Escuchar despedida
+</button>
+
+</div>
+
+</div>
+
+</article>
+
+
+</section>
+
+</main>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+<h3>Museo Virtual — Revolución China</h3>
+
+<p>Proyecto escolar de Historia</p>
+
+<p>Revolución China · 1949</p>
+
+<div class="credits">
+Proyecto realizado por Sebastián y su grupo.
+</div>
+
+</footer>
+
+
+<script>
+
+/* =========================
+   CRONOLOGÍA
+========================= */
+
+function mostrarFecha(fecha){
+
+const informacion={
+
+"1911":
+"En 1911 comenzó la Revolución Xinhai, que terminó con la dinastía Qing.",
+
+"1921":
+"En 1921 fue fundado el Partido Comunista de China.",
+
+"1937":
+"En 1937 comenzó la guerra a gran escala contra Japón.",
+
+"1949":
+"El primero de octubre de 1949 Mao Zedong proclamó la República Popular China.",
+
+"1966":
+"En 1966 comenzó la Revolución Cultural.",
+
+"1976":
+"En 1976 murió Mao Zedong."
+
+};
+
+alert(
+informacion[fecha] ||
+"No hay información disponible."
+);
+
+}
+
+
+/* =========================
+   AUDIO
+========================= */
+
+function hablar(texto){
+
+if(!("speechSynthesis" in window)){
+
+alert(
+"Tu navegador no permite reproducir la narración."
+);
+
+return;
+
+}
+
+speechSynthesis.cancel();
+
+const voz=new SpeechSynthesisUtterance(texto);
+
+voz.lang="es-ES";
+voz.rate=.95;
+voz.pitch=1;
+
+speechSynthesis.speak(voz);
+
+}
+
+
+/* =========================
+   ERROR DE IMAGEN
+========================= */
+
+function imagenError(imagen){
+
+const caja=document.createElement("div");
+
+caja.className="image-fallback";
+
+caja.innerHTML=`
+<div>
+<strong>Imagen histórica</strong>
+<br>
+<span>La imagen no pudo cargarse.</span>
+</div>
+`;
+
+imagen.replaceWith(caja);
+
+}
+
+
+/* =========================
+   DETENER AUDIO
+========================= */
+
+window.addEventListener(
+"beforeunload",
+function(){
+
+if("speechSynthesis" in window){
+
+speechSynthesis.cancel();
+
+}
+
+}
+);
+
+</script>
 
 </body>
 </html>
